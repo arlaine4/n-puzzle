@@ -1,5 +1,12 @@
 import sys
+import argparse
 from build_dico import check_dico_infos, build_dictionnary_infos
+
+parser = argparse.ArgumentParser()
+parser.add_argument("h-hamming", "-hh", type=str, help="hamming distance heuristic")
+parser.add_argument("h-manhattan", "-hm", type-str, help="manhattan distance heuristic")
+parser.add_argument("h-linear_conflict", "-hl", type=str, help="linear conflict heuristic")
+options = parser.parse_args()
 
 class   Puzzle():
     def __init__(self):
