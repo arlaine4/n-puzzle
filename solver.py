@@ -17,7 +17,7 @@ class   Puzzle():
         self.dico = build_dictionnary_infos()
 
     def h_hamming(self):
-        tosolve = np.array(([8, 4, 5], [3, 0 ,1], [7, 2, 6]))
+        tosolve = np.array(([8, 4, 5, 10], [11, 13, 12, 16], [3, 0 , 1, 14], [7, 2, 6, 15]))
         a_size = int(np.sqrt(tosolve.size))
         solution = np.zeros((a_size, a_size), dtype=int)
         i = 0
@@ -27,13 +27,13 @@ class   Puzzle():
         b = 1
         cpy = a_size
         while n < tosolve.size:
-            while i < cpy + a:
+            while i < cpy - a:
                 solution[j][i] = n
                 n += 1
                 i += 1
             i -= 1
             j += 1
-            while j < cpy + a:
+            while j < cpy - a:
                 solution[j][i] = n
                 n += 1
                 j += 1
@@ -49,6 +49,7 @@ class   Puzzle():
                 solution[j][i] = n
                 n += 1
                 j -= 1
+            a += 1
             n += 1
         print(solution)
         hamming = np.zeros((a_size, a_size), dtype=int)
