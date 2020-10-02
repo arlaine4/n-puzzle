@@ -1,6 +1,6 @@
 import sys
 import argparse
-from build_dico import check_dico_infos, build_dictionnary_infos
+from utils import check_dico_infos, build_dictionnary_infos, options_parsing
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--hamming", "-a", action='store_true', help="hamming distance heuristic")
@@ -24,18 +24,10 @@ class   Puzzle():
             sys.exit()
 
 if __name__ == "__main__":
-    h_type = []
-    if options.hamming:
-        h_type.append("hamming")
-    if options.manhattan:
-        h_type.append("manhattan")
-    if options.linear_conflict:
-        h_type.append("linear_conflict")
-    if len(h_type) > 1:
-        print("Please choose only one heuristic function")
-        exit(1)
-    elif len(h_type) == 0:
-        h_type.append("linear_conflict")
+    h_type = options_parsing(options)
+    if h_type is None:
+        print("Please enter only one heuristic function type at a time.")
+        sys.exit()
     print(h_type)
     puzzle = Puzzle()
     puzzle.main()
