@@ -19,9 +19,39 @@ class   Puzzle():
     def h_hamming(self):
         tosolve = np.array(([8, 4, 5], [3, 0 ,1], [7, 2, 6]))
         a_size = int(np.sqrt(tosolve.size))
-        solution = np.array(([1, 2, 3], [8, 0 ,4], [7, 6, 5]))
+        solution = np.zeros((a_size, a_size), dtype=int)
+        i = 0
+        j = 0
+        n = 1
+        a = 0
+        b = 1
+        cpy = a_size
+        while n < tosolve.size:
+            while i < cpy + a:
+                solution[j][i] = n
+                n += 1
+                i += 1
+            i -= 1
+            j += 1
+            while j < cpy + a:
+                solution[j][i] = n
+                n += 1
+                j += 1
+            j -= 1
+            while i >= 0 + a:
+                solution[j][i] = n
+                n += 1
+                i -= 1
+            i += 1
+            j -= 1
+            a += 1
+            while j >= 0 + a:
+                solution[j][i] = n
+                n += 1
+                j -= 1
+            n += 1
+        print(solution)
         hamming = np.zeros((a_size, a_size), dtype=int)
-        print(hamming)
         for i in range(a_size):
             for j in range(a_size):
                 if solution[i][j] == tosolve[i][j] and tosolve[i][j] != 0:
