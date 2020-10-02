@@ -17,10 +17,11 @@ class   Puzzle():
         self.dico = build_dictionnary_infos()
 
     def h_hamming(self):
-        solution = np.array(([1, 2, 3], [8, 0 ,4], [7, 6, 5]))
         tosolve = np.array(([8, 4, 5], [3, 0 ,1], [7, 2, 6]))
-        hamming = np.array(([0, 0, 0], [0, 0 ,0], [0, 0, 0]))
         a_size = int(np.sqrt(tosolve.size))
+        solution = np.array(([1, 2, 3], [8, 0 ,4], [7, 6, 5]))
+        hamming = np.zeros((a_size, a_size), dtype=int)
+        print(hamming)
         for i in range(a_size):
             for j in range(a_size):
                 if solution[i][j] == tosolve[i][j] and tosolve[i][j] != 0:
