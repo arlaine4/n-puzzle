@@ -1,5 +1,6 @@
 import sys
 import argparse
+import numpy as np
 from utils import check_dico_infos, build_dictionnary_infos, options_parsing
 
 parser = argparse.ArgumentParser()
@@ -15,6 +16,17 @@ class   Puzzle():
         self.iter = 0
         self.dico = build_dictionnary_infos()
 
+    def h_hamming(self):
+        solution = np.array(([1, 2, 3], [8, 0 ,4], [7, 6, 5]))
+        tosolve = np.array(([8, 4, 5], [3, 0 ,1], [7, 2, 6]))
+        hamming = np.array(([0, 0, 0], [0, 0 ,0], [0, 0, 0]))
+        a_size = int(np.sqrt(tosolve.size))
+        for i in range(a_size):
+            for j in range(a_size):
+                if solution[i][j] == tosolve[i][j] and tosolve[i][j] != 0:
+                    hamming[i][j] = 1
+        print(sum(sum(hamming)))
+
     def main(self):
         solve_puzzle_bool = check_dico_infos(self)
         print("solvable_puzzle : ", solve_puzzle_bool)
@@ -22,6 +34,7 @@ class   Puzzle():
         if solve_puzzle_bool is False:
             print("This puzzle is unsolvable.")
             sys.exit()
+
 
 if __name__ == "__main__":
     h_type = options_parsing(options)
@@ -31,3 +44,4 @@ if __name__ == "__main__":
     print(h_type)
     puzzle = Puzzle()
     puzzle.main()
+    puzzle.h_hamming()
