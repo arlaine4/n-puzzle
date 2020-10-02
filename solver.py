@@ -11,6 +11,9 @@ class   Puzzle():
         solve_puzzle_bool = self.check_dico_infos()
         print("solvable_puzzle : ", solve_puzzle_bool)
         print(self.dico)
+        if solve_puzzle_bool is False:
+            print("This puzzle is unsolvable.")
+            sys.exit()
 
     def check_dico_infos(self):
         if self.dico["unsolvable"] == "True" or self.dico["solvable"] == "False":
@@ -40,9 +43,6 @@ class   Puzzle():
             print("Error in one of the parameters, please enter valid data for the puzzle.")
             sys.exit()
         return dico
-
-    def check_solvable_puzzle(self):
-        pass
 
 if __name__ == "__main__":
     puzzle = Puzzle()

@@ -2,11 +2,10 @@ def write_puzzle(puzzle, size, solvable, unsolvable, iterations):
     fd = open("data/puzzle.csv", "w+")
     fd.write(str(size) + '\n')
     for i in range(len(puzzle)):
-        if i % size == 0 and i != 0:
+        if i % size == 0 and i != 0 or i == len(puzzle) - 1:
             fd.write(str(puzzle[i]) + '\n')
-        elif i % size != 0:
+        elif i % size != 0 or i:
             fd.write(str(puzzle[i]) + ' ')
-    fd.write('\n')
     fd_infos = open("data/infos.txt", "w+")
     fd_infos.write("size={}\n".format(str(size)))
     fd_infos.write("solvable={}\n".format(solvable))
