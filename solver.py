@@ -3,9 +3,9 @@ import argparse
 from build_dico import check_dico_infos, build_dictionnary_infos
 
 parser = argparse.ArgumentParser()
-parser.add_argument("h-hamming", "-hh", type=str, help="hamming distance heuristic")
-parser.add_argument("h-manhattan", "-hm", type-str, help="manhattan distance heuristic")
-parser.add_argument("h-linear_conflict", "-hl", type=str, help="linear conflict heuristic")
+parser.add_argument("-hamming", "-hh", type=str, help="hamming distance heuristic")
+parser.add_argument("-manhattan", "-hm", type=str, help="manhattan distance heuristic")
+parser.add_argument("-linear_conflict", "-hl", type=str, help="linear conflict heuristic")
 options = parser.parse_args()
 
 class   Puzzle():
@@ -24,5 +24,6 @@ class   Puzzle():
             sys.exit()
 
 if __name__ == "__main__":
-    puzzle = Puzzle()
-    puzzle.main()
+	if not options.hamming and not options.manhattan and not options.linear_conflict:
+		puzzle = Puzzle()
+	puzzle.main()
