@@ -24,7 +24,7 @@ class   Puzzle():
         self.closed = []
         self.grid = []
         self.iter = 0
-        self.dico = self.set_dico()
+        self.dico = None
 
     def check_heuristic_to_call(self, h_type):
         if h_type == "hamming":
@@ -35,12 +35,13 @@ class   Puzzle():
             self.h_linear_conflict()
 
     def main(self, h_type):
+        self.set_dico()
+        print("dico in main: ", self.get_dico())
         solve_puzzle_bool = utils.check_dico_infos(self.get_dico())
-        print(self.dico)
         if solve_puzzle_bool is False:
             print("This puzzle is unsolvable.")
             sys.exit()
-        self.grid = self.set_grid()
+        self.set_grid()
         utils.print_grid(self.get_grid())
         #self.check_heuristic_to_call(h_type)
 
@@ -54,10 +55,10 @@ class   Puzzle():
         return self.dico
 
     def set_dico(self):
-        return utils.build_dictionnary_infos()
+        self.dico = utils.build_dictionnary_infos()
 
     def set_grid(self):
-        return utils.load_grid()
+        self.grid = utils.load_grid()
 
 #
 #------------------------------------------------------------------------------
