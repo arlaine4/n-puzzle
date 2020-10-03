@@ -4,11 +4,19 @@ import numpy as np
 import csv
 import utils
 
+#----------------------------------------------------------------------------------------------------------
+#                   Initialisation du parseur d'arguments (missing some for algorithm type)
+
+# I say we should moove it to a specific function and into another file, like utils.py
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--hamming", "-a", action='store_true', help="hamming distance heuristic")
 parser.add_argument("--manhattan", "-m", action='store_true',  help="manhattan distance heuristic")
 parser.add_argument("--linear_conflict", "-l", action='store_true', help="linear conflict heuristic")
 options = parser.parse_args()
+
+#
+#----------------------------------------------------------------------------------------------------------
 
 class   Puzzle():
     def __init__(self):
@@ -37,7 +45,7 @@ class   Puzzle():
         #self.check_heuristic_to_call(h_type)
 
 #------------------------------------------------------------------------------
-# Getteurs et setteurs
+#                               Getteurs et setteurs
 
     def get_grid(self):
         return self.grid
@@ -51,7 +59,13 @@ class   Puzzle():
     def set_grid(self):
         return utils.load_grid()
 
+#
 #------------------------------------------------------------------------------
+
+#------------------------------------------------------------------------------
+#                               Fonctions heuristiques
+
+#Peut etre les mooves dans un fichier a part juste pour les heuristique ?
 
     def h_manhattan(self):
         print("manhattan not done")
@@ -64,6 +78,10 @@ class   Puzzle():
     def h_hamming(self):
         print("hamming not done")
         return
+#
+#------------------------------------------------------------------------------
+
+#-> this part below was inside h_hamming
         """tosolve = np.array(([8, 4, 5, 10], [11, 13, 12, 16], [3, 0 , 1, 14], [7, 2, 6, 15]))
         a_size = int(np.sqrt(tosolve.size))
         solution = np.zeros((a_size, a_size), dtype=int)

@@ -2,18 +2,23 @@ import sys
 import csv
 
 def check_dico_infos(dico):
+    """Fonction de check si on solve le puzzle ou pas"""
+
     if dico["unsolvable"] == "True" or dico["solvable"] == "False":
         return False
     else:
         return True
 
 def load_grid():
+    """Chargement du puzzle dans une var grid depuis le csv
+    C'est la grid qui sera utilisee dans tout le programme"""
+
     grid = []
     i = 0
     with open('data/puzzle.csv', 'rt') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='|')
         for row in reader:
-            i += 1
+            i += 1      # le i sert juste a skip la premiere row ou il y a la size du puzzle
             if i > 1:
                 grid.append(row)
     return grid
@@ -23,6 +28,9 @@ def print_grid(grid):
         print(row)
 
 def build_dictionnary_infos():
+    """Recuperation et stockage des infos concernant le puzzle
+    dans infos.txt dans un dico"""
+
     dico = {"size" : 0, "solvable" : None, "unsolvable" : None, "iteration" : 10000}
     fd = open("data/infos.txt", "r+")
     infos = []
@@ -45,6 +53,9 @@ def build_dictionnary_infos():
     return dico
 
 def options_parsing(options):
+    """Fonction qui handle les conflits sur le type d'heuristique passee
+    en argument, par defaut ou en cas de conflit on utilise linear_conflict"""
+
     h_type = []
     if options.hamming:
         h_type.append("hamming")
