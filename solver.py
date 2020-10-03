@@ -1,7 +1,8 @@
 import sys
 import argparse
 import numpy as np
-from utils import check_dico_infos, build_dictionnary_infos, options_parsing
+import csv
+import utils
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--hamming", "-a", action='store_true', help="hamming distance heuristic")
@@ -13,11 +14,57 @@ class   Puzzle():
     def __init__(self):
         self.open = []
         self.closed = []
+        self.grid = []
         self.iter = 0
-        self.dico = build_dictionnary_infos()
+        self.dico = self.set_dico()
+
+    def check_heuristic_to_call(self, h_type):
+        if h_type == "hamming":
+            self.h_hamming()
+        elif h_type == "manhattan":
+            self.h_manhattan()
+        elif h_type == "linear_conflict":
+            self.h_linear_conflict()
+
+    def main(self, h_type):
+        solve_puzzle_bool = utils.check_dico_infos(self.get_dico())
+        print(self.dico)
+        if solve_puzzle_bool is False:
+            print("This puzzle is unsolvable.")
+            sys.exit()
+        self.grid = self.set_grid()
+        utils.print_grid(self.get_grid())
+        #self.check_heuristic_to_call(h_type)
+
+#------------------------------------------------------------------------------
+# Getteurs et setteurs
+
+    def get_grid(self):
+        return self.grid
+
+    def get_dico(self):
+        return self.dico
+
+    def set_dico(self):
+        return utils.build_dictionnary_infos()
+
+    def set_grid(self):
+        return utils.load_grid()
+
+#------------------------------------------------------------------------------
+
+    def h_manhattan(self):
+        print("manhattan not done")
+        return
+
+    def h_linear_conflict(self):
+        print("linear conflict not done")
+        return
 
     def h_hamming(self):
-        tosolve = np.array(([8, 4, 5, 10], [11, 13, 12, 16], [3, 0 , 1, 14], [7, 2, 6, 15]))
+        print("hamming not done")
+        return
+        """tosolve = np.array(([8, 4, 5, 10], [11, 13, 12, 16], [3, 0 , 1, 14], [7, 2, 6, 15]))
         a_size = int(np.sqrt(tosolve.size))
         solution = np.zeros((a_size, a_size), dtype=int)
         i = 0
@@ -57,23 +104,13 @@ class   Puzzle():
             for j in range(a_size):
                 if solution[i][j] == tosolve[i][j] and tosolve[i][j] != 0:
                     hamming[i][j] = 1
-        print(sum(sum(hamming)))
-
-    def main(self):
-        solve_puzzle_bool = check_dico_infos(self)
-        print("solvable_puzzle : ", solve_puzzle_bool)
-        print(self.dico)
-        if solve_puzzle_bool is False:
-            print("This puzzle is unsolvable.")
-            sys.exit()
-
+        print(sum(sum(hamming)))"""
 
 if __name__ == "__main__":
-    h_type = options_parsing(options)
+    h_type = utils.options_parsing(options)
     if h_type is None:
         print("Please enter only one heuristic function type at a time.")
         sys.exit()
     print(h_type)
     puzzle = Puzzle()
-    puzzle.main()
-    puzzle.h_hamming()
+    puzzle.main(h_type)

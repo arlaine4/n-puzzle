@@ -1,10 +1,26 @@
 import sys
+import csv
 
-def check_dico_infos(instance_puzzle):
-    if instance_puzzle.dico["unsolvable"] == "True" or instance_puzzle.dico["solvable"] == "False":
+def check_dico_infos(dico):
+    if dico["unsolvable"] == "True" or dico["solvable"] == "False":
         return False
     else:
         return True
+
+def load_grid():
+    grid = []
+    i = 0
+    with open('data/puzzle.csv', 'rt') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in reader:
+            i += 1
+            if i > 1:
+                grid.append(row)
+    return grid
+
+def print_grid(grid):
+    for row in grid:
+        print(row)
 
 def build_dictionnary_infos():
     dico = {"size" : 0, "solvable" : None, "unsolvable" : None, "iteration" : 10000}
@@ -18,7 +34,6 @@ def build_dictionnary_infos():
         try:
             dico["size"] = int(infos[0][1])
             dico["iteration"] = int(infos[3][1])
-            print(dico)
         except:
             print("Error with casting size and/or iteration to integer values, please enter a valid input.")
             sys.exit()
