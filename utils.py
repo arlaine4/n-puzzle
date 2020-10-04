@@ -3,6 +3,8 @@ import csv
 import argparse
 
 def get_args_argparse():
+    """Initialisation et ajout des arguments, ils sont utilisees dans solver.py"""
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--hamming', '-a', action='store_true', help='hamming distamce heuristic')
     parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
@@ -32,7 +34,12 @@ def load_grid():
                 grid.append(row)
     return grid
 
-def print_grid(grid):
+def set_iter(dico):
+    return int(dico["iteration"])
+
+def print_grid(mode="debug", grid=None, h_type=None, dico=None):
+    if mode == "debug":
+        print("Selected Heuristic : \033[31;3m{}\033[0m\nInfos on grid : \033[32;3m{}\033[0m".format(h_type, dico))
     for row in grid:
         print(row)
 

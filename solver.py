@@ -4,10 +4,17 @@ import numpy as np
 import csv
 import utils
 
+class   Node():
+    def __init__(self):
+        self.g_c = 0.0 # g(x) : sum of g(x) of the parent node and the cost to travel to that node from it’s parent.
+        self.h_c = 0.0 # heuristic cost of the node
+        self.f_c = 0.0 # Final cost of the node     --> f_c = h_c + g_c ( h_c = h(x) / g_c = g(x) / f_c = f(x) )
+
 class   Puzzle():
     def __init__(self):
-        self.open = []
-        self.closed = []
+        self.open = [] #instances de class Node
+        self.closed = [] #instances de class Node
+        self.next_node = None # instances de class Node aussi ?
         self.grid = []
         self.iter = 0
         self.dico = None
@@ -22,13 +29,14 @@ class   Puzzle():
 
     def main(self, h_type):
         self.set_dico()
-        print("dico in main: ", self.get_dico())
+        self.set_iter()
+        self.set_grid()
         solve_puzzle_bool = utils.check_dico_infos(self.get_dico())
         if solve_puzzle_bool is False:
-            print("This puzzle is unsolvable.")
+            utils.print_grid("error", self.get_grid())
+            print("This puzzle is \033[31;3munsolvable.\033[0m")
             sys.exit()
-        self.set_grid()
-        utils.print_grid(self.get_grid())
+        utils.print_grid("debug", self.get_grid(), h_type, self.get_dico())
         #self.check_heuristic_to_call(h_type)
 
 #------------------------------------------------------------------------------
@@ -39,6 +47,9 @@ class   Puzzle():
 
     def get_dico(self):
         return self.dico
+
+    def set_iter(self):
+        self.iter = utils.set_iter(self.get_dico())
 
     def set_dico(self):
         self.dico = utils.build_dictionnary_infos()
@@ -55,6 +66,5 @@ if __name__ == "__main__":
     if h_type is None:
         print("Please enter only one heuristic function type at a time.")
         sys.exit()
-    print(h_type)
     puzzle = Puzzle()
     puzzle.main(h_type)
