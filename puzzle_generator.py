@@ -60,35 +60,34 @@ def make_goal(s):
 	return puzzle
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser()
+        parser = argparse.ArgumentParser()
 
-	parser.add_argument("size", type=int, help="Size of the puzzle's side. Must be >3.")
-	parser.add_argument("-s", "--solvable", action="store_true", default=False, help="Forces generation of a solvable puzzle. Overrides -u.")
-	parser.add_argument("-u", "--unsolvable", action="store_true", default=False, help="Forces generation of an unsolvable puzzle")
-	parser.add_argument("-i", "--iterations", type=int, default=10000, help="Number of passes")
+        parser.add_argument("size", type=int, help="Size of the puzzle's side. Must be >3.")
+        parser.add_argument("-s", "--solvable", action="store_true", default=False, help="Forces generation of a solvable puzzle. Overrides -u.")
+        parser.add_argument("-u", "--unsolvable", action="store_true", default=False, help="Forces generation of an unsolvable puzzle")
+        parser.add_argument("-i", "--iterations", type=int, default=10000, help="Number of passes")
 
-	args = parser.parse_args()
+        args = parser.parse_args()
 
-	random.seed()
+        random.seed()
 
-	if args.solvable and args.unsolvable:
-		print "Can't be both solvable AND unsolvable, dummy !"
-		sys.exit(1)
+        if args.solvable and args.unsolvable:
+                print("Can't be both solvable AND unsolvable, dummy !")
+                sys.exit(1)
 
-	if args.size < 3:
-		print "Can't generate a puzzle with size lower than 2. It says so in the help. Dummy."
-		sys.exit(1)
+        if args.size < 3:
+                print("Can't generate a puzzle with size lower than 2. It says so in the help. Dummy.")
+                sys.exit(1)
 
-	if not args.solvable and not args.unsolvable:
-		solv = random.choice([True, False])
-	elif args.solvable:
-		solv = True
-	elif args.unsolvable:
-		solv = False
+        if not args.solvable and not args.unsolvable:
+            solv = random.choice([True, False])
+        elif args.solvable:
+            solv = True
+        elif args.unsolvable:
+            solv = False
 
-	s = args.size
-
-	puzzle = make_puzzle(s, solvable=solv, iterations=args.iterations)
+        s = args.size
+        puzzle = make_puzzle(s, solvable=solv, iterations=args.iterations)
         #-----------------------------------------------------------------------------------
         # Call to write puzzle inside file instead of on stdout
 

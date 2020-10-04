@@ -1,5 +1,14 @@
 import sys
 import csv
+import argparse
+
+def get_args_argparse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--hamming', '-a', action='store_true', help='hamming distamce heuristic')
+    parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
+    parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic')
+    options = parser.parse_args()
+    return options
 
 def check_dico_infos(dico):
     """Fonction de check si on solve le puzzle ou pas"""
