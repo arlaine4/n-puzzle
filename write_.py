@@ -8,7 +8,13 @@ def write_puzzle(puzzle, size, solvable, unsolvable, iterations):
     lst = puzzle
     array = np.array(lst)
     array = np.reshape(array, (-1, size))
-    fd.write(str(array) + '\n')
+    for elem in array:
+        for i in range(len(elem)):
+            if i < len(elem) - 1:
+                fd.write(str(elem[i]) + ' ')
+            else:
+                fd.write(str(elem[i]))
+        fd.write('\n')
 
     fd_infos = open("data/infos.txt", "w+")
     fd_infos.write("size={}\n".format(str(size)))
