@@ -28,11 +28,11 @@ def set_ideal_grid(dico, grid):
     i = 0
     nb = 1
     j = 0
+    go = True
     while 0 in placed_numbers:
-        print(placed_numbers, nb)
+        print(placed_numbers, nb, i, j, ideal_grid[i][j])
         print(ideal_grid, '\n\n')
         if j == size - 1: # direction droite
-            print("i : {}\tj : {}\tnb : {}".format(i, j, nb))
             if placed_numbers[i][j] == 0:
                 print("droite")
                 placed_numbers[i][j] = 1
@@ -45,9 +45,11 @@ def set_ideal_grid(dico, grid):
             if j >= size:
                 j -= 1
                 i -= 1
-            else:
+            elif i + 1 < size - 1:
                 i += 1
-            print(i, j, size)
+            else:
+                j -= 1
+            print(i, j)
             if placed_numbers[i][j] == 0:
                 while i < size and placed_numbers[i][j] == 0: # descente
                     print('descente')
@@ -59,7 +61,6 @@ def set_ideal_grid(dico, grid):
             j -= 1
             while j != 0 and placed_numbers[i][j] == 0: # direction gauche
                 print('gauche')
-                print(ideal_grid, '\n\n')
                 placed_numbers[i][j] = 1
                 ideal_grid[i][j] = nb ; nb += 1
                 print(ideal_grid, '\n\n')
@@ -78,6 +79,7 @@ def set_ideal_grid(dico, grid):
             print(ideal_grid, '\n\n')
         if nb == size * size:
             break
+        print("before end of loop : {} {}".format(i, j))
         j += 1
     print(i, j)
     print(ideal_grid)
