@@ -12,6 +12,7 @@ class   Node():
 
 class   Puzzle():
     def __init__(self):
+        self.ideal_grid = []
         self.open = [] #instances de class Node
         self.closed = [] #instances de class Node
         self.next_node = None # instances de class Node aussi ?
@@ -36,6 +37,7 @@ class   Puzzle():
             utils.print_grid("error", self.get_grid())
             print("This puzzle is \033[31;3munsolvable.\033[0m")
             sys.exit()
+        self.set_ideal_grid()
         utils.print_grid("debug", self.get_grid(), h_type, self.get_dico())
         #self.check_heuristic_to_call(h_type)
 
@@ -47,6 +49,9 @@ class   Puzzle():
 
     def get_dico(self):
         return self.dico
+
+    def set_ideal_grid(self):
+        self.ideal_grid = utils.set_ideal_grid(self.get_dico(), self.get_grid())
 
     def set_iter(self):
         self.iter = utils.set_iter(self.get_dico())

@@ -1,6 +1,7 @@
 import sys
 import csv
 import argparse
+import numpy as np
 
 def get_args_argparse():
     """Initialisation et ajout des arguments, ils sont utilisees dans solver.py"""
@@ -19,6 +20,42 @@ def check_dico_infos(dico):
         return False
     else:
         return True
+
+def set_ideal_grid(dico, grid):
+    size = dico["size"] - 1
+    ideal_grid = np.full((size, size), None)
+    placed_numbers = np.full((size, size), 0)
+    i = 0
+    nb = 1
+    j = 0
+    while 0 in placed_numbers:
+        print(placed_numbers, nb)
+        print(ideal_grid)
+        if j == size - 1: # direction droite
+            placed_numbers[i][j] = 1
+            ideal_grid[i][j] = nb ; nb += 1
+            i += 1
+            while i < size and placed_numbers[i][j] == 0: # descente
+                placed_numbers[i][j] = 1
+                ideal_grid[i][j] = nb ; nb += 1
+                i += 1
+            i -= 1
+            j -= 1
+            while j != 0 and placed_numbers[i][j] == 0: # direction gauche
+                placed_numbers[i][j] = 1
+                ideal_grid[i][j] = nb ; nb += 1
+                j -= 1
+            while i != 0 and placed_numbers[i][j] == 0: # montee
+                placed_numbers[i][j] = 1
+                ideal_grid[i][j] = nb ; nb += 1
+                i -= 1
+            i += 1
+        if placed_numbers[i][j] == 0:
+            placed_numbers[i][j] = 1
+            ideal_grid[i][j] = nb ; nb += 1
+        j += 1
+    print(ideal_grid)
+    return ideal_grid
 
 def load_grid():
     """Chargement du puzzle dans une var grid depuis le csv
