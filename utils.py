@@ -30,34 +30,56 @@ def set_ideal_grid(dico, grid):
     j = 0
     while 0 in placed_numbers:
         print(placed_numbers, nb)
-        print(ideal_grid)
+        print(ideal_grid, '\n\n')
         if j == size - 1: # direction droite
-            print(i, j)
-            placed_numbers[i][j] = 1
-            ideal_grid[i][j] = nb ; nb += 1
-            i += 1
-            while i < size and placed_numbers[i][j] == 0: # descente
+            print("i : {}\tj : {}\tnb : {}".format(i, j, nb))
+            if placed_numbers[i][j] == 0:
+                print("droite")
                 placed_numbers[i][j] = 1
                 ideal_grid[i][j] = nb ; nb += 1
+                print(ideal_grid, '\n\n')
+            elif placed_numbers[i][j] == 1 and (j + 1 <= size - 1 and placed_numbers[i][j + 1] == 0):
+                j += 1
+                placed_numbers[i][j] = 1
+                ideal_grid[i][j] = nb ; nb += 1
+            if j >= size:
+                j -= 1
+                i -= 1
+            else:
                 i += 1
+            print(i, j, size)
+            if placed_numbers[i][j] == 0:
+                while i < size and placed_numbers[i][j] == 0: # descente
+                    print('descente')
+                    placed_numbers[i][j] = 1
+                    ideal_grid[i][j] = nb ; nb += 1
+                    print(ideal_grid, '\n\n')
+                    i += 1
             i -= 1
             j -= 1
             while j != 0 and placed_numbers[i][j] == 0: # direction gauche
+                print('gauche')
+                print(ideal_grid, '\n\n')
                 placed_numbers[i][j] = 1
                 ideal_grid[i][j] = nb ; nb += 1
+                print(ideal_grid, '\n\n')
                 j -= 1
             while i != 0 and placed_numbers[i][j] == 0: # montee
+                print('montee')
                 placed_numbers[i][j] = 1
                 ideal_grid[i][j] = nb ; nb += 1
+                print(ideal_grid, '\n\n')
                 i -= 1
             i += 1
-        print(i, j)
         if placed_numbers[i][j] == 0:
+            print('initial droite for i [ {} ] and j [ {} ]'.format(i, j))
             placed_numbers[i][j] = 1
             ideal_grid[i][j] = nb ; nb += 1
+            print(ideal_grid, '\n\n')
+        if nb == size * size:
+            break
         j += 1
     print(i, j)
-    ideal_grid[i][j] = 0
     print(ideal_grid)
     return ideal_grid
 
