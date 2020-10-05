@@ -19,7 +19,6 @@ def h_hamming(dico, grid):
     # CONVERTION DE LA LIST grid EN NUMPY ARRAY npgrid
     npgrid = np.zeros((size, size), dtype=int)
     test = str(grid).split()
-    tmp = []
     l = 0
     n = 0
     for i in test:
