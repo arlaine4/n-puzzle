@@ -22,8 +22,8 @@ def check_dico_infos(dico):
         return True
 
 def set_ideal_grid(dico, grid):
-    size = dico["size"] - 1
-    ideal_grid = np.full((size, size), None)
+    size = dico["size"] 
+    ideal_grid = np.full((size, size), 0)
     placed_numbers = np.full((size, size), 0)
     i = 0
     nb = 1
@@ -32,6 +32,7 @@ def set_ideal_grid(dico, grid):
         print(placed_numbers, nb)
         print(ideal_grid)
         if j == size - 1: # direction droite
+            print(i, j)
             placed_numbers[i][j] = 1
             ideal_grid[i][j] = nb ; nb += 1
             i += 1
@@ -50,10 +51,13 @@ def set_ideal_grid(dico, grid):
                 ideal_grid[i][j] = nb ; nb += 1
                 i -= 1
             i += 1
+        print(i, j)
         if placed_numbers[i][j] == 0:
             placed_numbers[i][j] = 1
             ideal_grid[i][j] = nb ; nb += 1
         j += 1
+    print(i, j)
+    ideal_grid[i][j] = 0
     print(ideal_grid)
     return ideal_grid
 
