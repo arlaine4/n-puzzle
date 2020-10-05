@@ -1,3 +1,7 @@
+def static_additive_patern_database(grid):
+    patern_grid = [[], [], []]
+    return pater_grid
+
 def h_manhattan():
     print("manhattan not done")
     return
