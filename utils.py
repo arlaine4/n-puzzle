@@ -22,6 +22,72 @@ def check_dico_infos(dico):
         return True
 
 def set_ideal_grid(dico, grid):
+    size = dico["size"]
+    ideal_grid = np.full((size, size), 0)
+    placed_numbers = np.full((size, size), 0)
+    loop_complete = [False, False, False, False] ; nb_loop = 0
+    i = 0 ; j = 0 ; nb = 1
+    while nb != size * size:
+        while j < size and placed_numbers[i][j] == 0: # droite
+            ideal_grid[i][j] = nb ; nb += 1
+            placed_numbers[i][j] = 1
+            print(ideal_grid)
+            loop_complete[0] = True
+            j += 1
+        print("first : ", i, j)
+        if j == size:
+            j -= 1
+            i += 1
+        else:
+            i += 1
+        while i < size and placed_numbers[i][j] == 0: # bas
+            ideal_grid[i][j] = nb ; nb += 1
+            placed_numbers[i][j] = 1
+            print(ideal_grid)
+            loop_complete[1] = True
+            i += 1
+        print("second : ", i, j)
+        if i == size:
+            i -= 1
+            j -= 1
+        else:
+            j += 1
+        print(i, j)
+        #mettre un else
+        while j >= 0 and placed_numbers[i][j] == 0: # bas
+            ideal_grid[i][j] = nb ; nb += 1
+            placed_numbers[i][j] = 1
+            loop_complete[2] = True
+            print(ideal_grid)
+            j -= 1
+        print("third : ", i, j)
+        if j < 0:
+            j += 1
+            i -= 1
+        else:
+            i -= 1
+        while i >= 0 and placed_numbers[i][j] == 0: # bas
+            ideal_grid[i][j] = nb ; nb += 1
+            placed_numbers[i][j] = 1
+            print(ideal_grid)
+            loop_complete[3] = True
+            i -= 1
+        print("fourth : ", i, j)
+        if False not in loop_complete:
+            for i in range(len(loop_complete)):
+                loop_complete[i] = False
+            nb_loop += 1
+            i = nb_loop ; j = nb_loop
+        elif i < 0:
+            i += 1
+            j += 1
+        else:
+            print("else : ", i, j)
+            j += 1
+        print(ideal_grid)
+    return ideal_grid
+
+"""def set_ideal_grid(dico, grid):
     size = dico["size"] 
     ideal_grid = np.full((size, size), 0)
     placed_numbers = np.full((size, size), 0)
@@ -45,11 +111,8 @@ def set_ideal_grid(dico, grid):
             if j >= size:
                 j -= 1
                 i -= 1
-            elif i + 1 < size - 1:
-                i += 1
             else:
-                j -= 1
-            print(i, j)
+                i += 1
             if placed_numbers[i][j] == 0:
                 while i < size and placed_numbers[i][j] == 0: # descente
                     print('descente')
@@ -83,7 +146,7 @@ def set_ideal_grid(dico, grid):
         j += 1
     print(i, j)
     print(ideal_grid)
-    return ideal_grid
+    return ideal_grid"""
 
 def load_grid():
     """Chargement du puzzle dans une var grid depuis le csv
