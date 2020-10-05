@@ -34,7 +34,7 @@ def h_hamming(dico, grid):
     hamming = np.zeros((size, size), dtype=int)
     for i in range(size):
         for j in range(size):
-            if solved[i][j] == npgrid[i][j] and npgrid[i][j] != 0:
+            if solved[i][j] != npgrid[i][j] and npgrid[i][j] != 0:
                 hamming[i][j] = 1
     # DEBUG
     print("HAMMING COMP")
