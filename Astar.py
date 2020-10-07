@@ -35,24 +35,24 @@ def compare_childs_costs(dico, grid, current_node, h_type):
     cur_pos = {"x" : x, "y" : y}
     if x + 1 < dico["size"]:
         print('\nBAS')
-        node = solver.Node()
+        node_b = deepcopy(solver.Node())
         next_pos_b = {"x" : x + 1, "y" : y}
-        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_b, h_type))
+        childs.append(get_child_cost(dico, node_b, grid, cur_pos, next_pos_b, h_type))
     if x - 1 > 0 and x < dico['size']:
         print('\nHAUT')
-        node = solver.Node()
+        node_h = deepcopy(solver.Node())
         next_pos_h = {"x" : x - 1, "y" : y}
-        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_h, h_type))
+        childs.append(get_child_cost(dico, node_h, grid, cur_pos, next_pos_h, h_type))
     if y + 1 < dico['size']:
         print('\nDROITE')
-        node = solver.Node()
+        node_d = deepcopy(solver.Node())
         next_pos_d = {"x" : x, "y" : y + 1}
-        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_d, h_type))
+        childs.append(get_child_cost(dico, node_d, grid, cur_pos, next_pos_d, h_type))
     if y - 1 > 0 and x < dico['size']:
         print('\nGAUCHE')
-        node = solver.Node()
+        node_g = deepcopy(solver.Node())
         next_pos_g = {"x" : x, "y" : y - 1}
-        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_g, h_type))
+        childs.append(get_child_cost(dico, node_g, grid, cur_pos, next_pos_g, h_type))
 
 
 
@@ -62,7 +62,7 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type):
     value = tmpgrid[next_pos['x']][next_pos['y']]
     tmpgrid[cur_pos['x']][cur_pos['y']] = value
     tmpgrid[next_pos['x']][next_pos['y']] = 0
-    h.call_heuristic(dico, tmpgrid, h_type)
+    node.h_c = h.call_heuristic(dico, tmpgrid, h_type)
     print("after move :\n", tmpgrid, '\n')
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type):
