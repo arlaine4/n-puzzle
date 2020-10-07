@@ -26,8 +26,9 @@ def h_hamming(dico, grid):
         if l == size and n < size:
             l = 0
             n += 1
-        npgrid[n][l] = int(tmp)
-        l += 1
+        if tmp.isdigit():
+            npgrid[n][l] = int(tmp)
+            l += 1
     # FIN
     solved = set_ideal_grid(dico)
     hamming = np.zeros((size, size), dtype=int)
@@ -36,9 +37,9 @@ def h_hamming(dico, grid):
             if solved[i][j] != npgrid[i][j] and npgrid[i][j] != 0:
                 hamming[i][j] = 1
     # DEBUG
-    print("HAMMING COMP")
-    print(solved)
-    print(npgrid)
+    # print("HAMMING COMP")
+    # print(solved)
+    # print(npgrid)
     # FIN DEBUG
     h_ham = sum(sum(hamming))
     print("Hamming heuristic atm is : " + str(h_ham))

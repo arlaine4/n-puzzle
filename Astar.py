@@ -2,6 +2,7 @@ import solver
 import heuristics
 import re
 import numpy as np
+from copy import deepcopy
 
 def convert_multi_d_to_numpy(grid, size):
     npgrid = np.zeros((size, size), dtype=int)
@@ -31,18 +32,38 @@ def compare_childs_costs(dico, grid, current_node, h_type):
     x = current_node.pos["x"]
     y = current_node.pos["y"]
     childs = []
-    tmp_pos = {"x" : x, "y" : y}
+    cur_pos = {"x" : x, "y" : y}
     if x + 1 < dico["size"]:
+        print('\nBAS')
         node = solver.Node()
-        node.pos["x"] = x + 1 ; node.pos["y"] = y
-        childs.append(get_child_cost(node, grid, tmp_pos, h_type))
+        next_pos_b = {"x" : x + 1, "y" : y}
+        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_b, h_type))
+    if x - 1 > 0 and x < dico['size']:
+        print('\nHAUT')
+        node = solver.Node()
+        next_pos_h = {"x" : x - 1, "y" : y}
+        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_h, h_type))
+    if y + 1 < dico['size']:
+        print('\nDROITE')
+        node = solver.Node()
+        next_pos_d = {"x" : x, "y" : y + 1}
+        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_d, h_type))
+    if y - 1 > 0 and x < dico['size']:
+        print('\nGAUCHE')
+        node = solver.Node()
+        next_pos_g = {"x" : x, "y" : y - 1}
+        childs.append(get_child_cost(dico, node, grid, cur_pos, next_pos_g, h_type))
 
-def get_child_cost(node, grid, tmp_pos, h_type):
-    print("before move :\n\n", grid)
-    value = grid[node.pos['x']][node.pos['y']]
-    grid[tmp_pos['x']][tmp_pos['y']] = value
-    grid[node.pos['x']][node.pos['y']] = 0
-    print("after move : \n\n", grid)
+
+
+def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type):
+    tmpgrid = deepcopy(grid)
+    print("before move :\n", tmpgrid)
+    value = tmpgrid[next_pos['x']][next_pos['y']]
+    tmpgrid[cur_pos['x']][cur_pos['y']] = value
+    tmpgrid[next_pos['x']][next_pos['y']] = 0
+    heuristics.h_hamming(dico, tmpgrid)
+    print("after move :\n", tmpgrid, '\n')
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type):
     open_nodes = []
@@ -53,6 +74,7 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type):
 
 def Astar(dico, grid, closed_nodes, h_type):
     grid = convert_multi_d_to_numpy(grid, dico["size"])
+    print("Starting grid:\n", grid)
     start = solver.Node()
     start.pos = get_start_pos(grid)
     closed_nodes.append(start)
