@@ -24,14 +24,6 @@ class   Puzzle():
         self.grid = []
         self.dico = None
 
-    def check_heuristic_to_call(self, h_type):
-        if "hamming" in h_type:
-            h.h_hamming(self.get_dico(), self.get_grid())
-        elif h_type == "manhattan":
-            h.h_manhattan()
-        elif h_type == "linear_conflict":
-            h.h_linear_conflict()
-
     def main(self, h_type):
         self.set_dico()
         self.set_grid()
@@ -43,7 +35,6 @@ class   Puzzle():
         self.set_ideal_grid()
         #print(self.get_ideal_grid())
         #utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
-        self.check_heuristic_to_call(h_type)
         star.Astar(self.get_dico(), self.get_grid(), self.get_closed(), h_type)
 
 #------------------------------------------------------------------------------

@@ -6,6 +6,15 @@ def static_additive_patern_database(npgrid):
     patern_grid = [[], [], []]
     return pater_grid
 
+
+def call_heuristic(dico, grid, h_type):
+    if "hamming" in h_type:
+        h_hamming(dico, grid)
+    elif "manhattan" in h_type:
+        h_manhattan()
+    elif "linear_conflict" in h_type:
+        h_linear_conflict()
+
 def h_manhattan():
     print("manhattan not done")
     return

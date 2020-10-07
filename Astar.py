@@ -1,5 +1,5 @@
 import solver
-import heuristics
+import heuristics as h
 import re
 import numpy as np
 from copy import deepcopy
@@ -62,7 +62,7 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type):
     value = tmpgrid[next_pos['x']][next_pos['y']]
     tmpgrid[cur_pos['x']][cur_pos['y']] = value
     tmpgrid[next_pos['x']][next_pos['y']] = 0
-    heuristics.h_hamming(dico, tmpgrid)
+    h.call_heuristic(dico, tmpgrid, h_type)
     print("after move :\n", tmpgrid, '\n')
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type):
