@@ -23,8 +23,8 @@ class   Puzzle():
         self.dico = None
 
     def check_heuristic_to_call(self, h_type):
-        if h_type == "hamming":
-            h.h_hamming()
+        if "hamming" in h_type:
+            h.h_hamming(self.get_dico(), self.get_grid())
         elif h_type == "manhattan":
             h.h_manhattan()
         elif h_type == "linear_conflict":
@@ -40,8 +40,8 @@ class   Puzzle():
             print("This puzzle is \033[31;3munsolvable.\033[0m")
             sys.exit()
         self.set_ideal_grid()
-        print(self.get_ideal_grid())
-        utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
+        #print(self.get_ideal_grid())
+        #utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
         self.check_heuristic_to_call(h_type)
 
 #------------------------------------------------------------------------------

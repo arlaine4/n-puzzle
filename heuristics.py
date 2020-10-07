@@ -1,4 +1,4 @@
-import utils
+from set_ideal_grid import *
 import numpy as np
 import re
 
@@ -29,7 +29,7 @@ def h_hamming(dico, grid):
         npgrid[n][l] = int(tmp)
         l += 1
     # FIN
-    solved = utils.set_ideal_grid(dico, grid)
+    solved = set_ideal_grid(dico)
     hamming = np.zeros((size, size), dtype=int)
     for i in range(size):
         for j in range(size):
