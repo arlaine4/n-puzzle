@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 import csv
 import utils
+import heuristics as h
 from set_ideal_grid import set_ideal_grid
 
 class   Node():
@@ -23,11 +24,11 @@ class   Puzzle():
 
     def check_heuristic_to_call(self, h_type):
         if h_type == "hamming":
-            self.h_hamming()
+            h.h_hamming()
         elif h_type == "manhattan":
-            self.h_manhattan()
+            h.h_manhattan()
         elif h_type == "linear_conflict":
-            self.h_linear_conflict()
+            h.h_linear_conflict()
 
     def main(self, h_type):
         self.set_dico()
@@ -41,7 +42,7 @@ class   Puzzle():
         self.set_ideal_grid()
         print(self.get_ideal_grid())
         utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
-        #self.check_heuristic_to_call(h_type)
+        self.check_heuristic_to_call(h_type)
 
 #------------------------------------------------------------------------------
 #                               Getteurs et setteurs
