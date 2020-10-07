@@ -38,10 +38,14 @@ def load_grid():
 def set_iter(dico):
     return int(dico["iteration"])
 
-def print_grid(mode="debug", grid=None, h_type=None, dico=None):
+def print_grid(mode="debug", grid=None, h_type=None, dico=None, ideal_grid=None):
     if mode == "debug":
         print("Selected Heuristic : \033[31;3m{}\033[0m\nInfos on grid : \033[32;3m{}\033[0m".format(h_type, dico))
+    print("\033[35m;3Input grid:\033[0m")
     for row in grid:
+        print(row)
+    print("\033[35;3mIdeal grid:\033[0m")
+    for row in ideal_grid:
         print(row)
 
 def build_dictionnary_infos():

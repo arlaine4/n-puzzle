@@ -18,12 +18,8 @@ def to_spiral(A):
     B.flat[base_spiral(*A.shape)] = A.flat
     return B
 
-def from_spiral(A):
-    A = np.array(A)
-    return A.flat[base_spiral(*A.shape)].reshape(A.shape)
-
-if __name__ == "__main__":
-    size = 10
+def set_ideal_grid(dico):
+    size = dico["size"]
     A = np.arange(size**2).reshape(size,size)
     A += 1
     A[size-1][size-1] = 0
@@ -41,6 +37,5 @@ if __name__ == "__main__":
             n += 1
         npgrid[n][l] = int(tmp)
         l += 1
-    out = to_spiral(npgrid)
-    print(test, '\n\n', npgrid,'\n\n', out)
-
+    grid = to_spiral(npgrid)
+    return grid

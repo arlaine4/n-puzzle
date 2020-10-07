@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 import csv
 import utils
+from set_ideal_grid import set_ideal_grid
 
 class   Node():
     def __init__(self):
@@ -38,7 +39,8 @@ class   Puzzle():
             print("This puzzle is \033[31;3munsolvable.\033[0m")
             sys.exit()
         self.set_ideal_grid()
-        utils.print_grid("debug", self.get_grid(), h_type, self.get_dico())
+        print(self.get_ideal_grid())
+        utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
         #self.check_heuristic_to_call(h_type)
 
 #------------------------------------------------------------------------------
@@ -50,8 +52,11 @@ class   Puzzle():
     def get_dico(self):
         return self.dico
 
+    def get_ideal_grid(self):
+        return self.ideal_grid
+
     def set_ideal_grid(self):
-        self.ideal_grid = utils.set_ideal_grid(self.get_dico(), self.get_grid())
+        self.ideal_grid = set_ideal_grid(self.get_dico())
 
     def set_iter(self):
         self.iter = utils.set_iter(self.get_dico())
