@@ -7,7 +7,7 @@ def static_additive_patern_database(npgrid):
     return pater_grid
 
 
-def call_heuristic(dico, grid, h_type):
+def call_heuristic(dico, grid, h_type): # Determine quelle fonction heuristic utilisee
     if "hamming" in h_type:
         h_hamming(dico, grid)
     elif "manhattan" in h_type:
