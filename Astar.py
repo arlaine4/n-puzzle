@@ -73,9 +73,10 @@ def	sort_childs_costs(childs):
 			childs.remove(childs[i+1])
 			childs.insert(0, tmp)
 			i = 0
-		i += 1
+		else:
+			i += 1
 	print()
-	for child in sorted_childs:
+	for child in childs:
 		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
 
 
