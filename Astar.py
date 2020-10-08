@@ -60,11 +60,9 @@ def compare_childs_costs(dico, grid, current_node, h_type, ideal_grid):
 	#for child in childs:
 		#print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
 	childs = sort_childs_costs(childs)
+	return childs
 
 def	sort_childs_costs(childs):
-	sorted_childs = []
-	for child in childs:
-		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
 	i = 0
 	j = 0
 	while i < len(childs):
@@ -75,10 +73,7 @@ def	sort_childs_costs(childs):
 			i = 0
 		else:
 			i += 1
-	print()
-	for child in childs:
-		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
-
+	return childs
 
 def	get_child_move_cost(node, tmpgrid, ideal_grid):
 	pos = node.pos
@@ -108,11 +103,21 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
 	print("after move :\n", tmpgrid, '\n')
 	return node
 
+def	append_childs_to_file(childs):
+	if len(childs) == 2:
+		return childs[0], childs[1]
+	elif len(childs) == 3:
+		return childs[0], childs[1], childs[2]
+	elif len(childs) == 4:
+		return childs[0], childs[1], childs[2], childs[3]
+
 def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
-    open_nodes = []
-    next_node = None
-    file_node = []
-    childs = compare_childs_costs(dico, grid, start_node, h_type, ideal_grid)
+	open_nodes = []
+	next_node = None
+	file_node = []
+	closed_nodes.append(start_node)
+	childs = compare_childs_costs(dico, grid, start_node, h_type, ideal_grid)
+	file_node += append_childs_to_file(childs)
 	
 
 def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
