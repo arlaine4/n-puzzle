@@ -28,7 +28,7 @@ def get_start_pos(grid):
                 return pos
     return pos
 
-def compare_childs_costs(dico, grid, current_node, h_type, ideal_grid):
+def get_childs_and_infos(dico, grid, current_node, h_type, ideal_grid):
 	x = current_node.pos["x"]
 	y = current_node.pos["y"]
 	childs = []
@@ -116,7 +116,7 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
 	next_node = None
 	file_node = []
 	closed_nodes.append(start_node)
-	childs = compare_childs_costs(dico, grid, start_node, h_type, ideal_grid)
+	childs = get_childs_and_infos(dico, grid, start_node, h_type, ideal_grid)
 	file_node += append_childs_to_file(childs)
 	
 
