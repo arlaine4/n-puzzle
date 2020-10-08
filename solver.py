@@ -35,7 +35,7 @@ class   Puzzle():
         self.set_ideal_grid()
         #print(self.get_ideal_grid())
         #utils.print_grid("debug", self.get_grid(), h_type, self.get_dico(), self.get_ideal_grid())
-        star.Astar(self.get_dico(), self.get_grid(), self.get_closed(), h_type)
+        star.Astar(self.get_dico(), self.get_grid(), self.get_closed(), h_type, self.get_ideal_grid())
 
 #------------------------------------------------------------------------------
 #                               Getteurs et setteurs
