@@ -67,7 +67,13 @@ def	sort_childs_costs(childs):
 		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
 	i = 0
 	j = 0
-
+	while i < len(childs):
+		if i + 1 < len(childs) and childs[i+1] and childs[i].f_c > childs[i+1].f_c:
+			tmp = deepcopy(childs[i+1])
+			childs.remove(childs[i+1])
+			childs.insert(0, tmp)
+			i = 0
+		i += 1
 	print()
 	for child in sorted_childs:
 		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
