@@ -7,9 +7,9 @@ def static_additive_patern_database(npgrid):
     return pater_grid
 
 
-def call_heuristic(dico, grid, h_type): # Determine quelle fonction heuristic utilisee
+def call_heuristic(dico, grid, h_type, ideal_grid): # Determine quelle fonction heuristic utilisee
     if "hamming" in h_type:
-        h_hamming(dico, grid)
+        h_hamming(dico, grid, ideal_grid)
     elif "manhattan" in h_type:
         h_manhattan()
     elif "linear_conflict" in h_type:
@@ -23,7 +23,7 @@ def h_linear_conflict():
     print("linear conflict not done")
     return
 
-def h_hamming(dico, grid):
+def h_hamming(dico, grid, ideal_grid):
     size = dico["size"]
     # CONVERTION DE LA LIST grid EN NUMPY ARRAY npgrid
     npgrid = np.zeros((size, size), dtype=int)
@@ -39,15 +39,14 @@ def h_hamming(dico, grid):
             npgrid[n][l] = int(tmp)
             l += 1
     # FIN
-    solved = set_ideal_grid(dico)
     hamming = np.zeros((size, size), dtype=int)
     for i in range(size):
         for j in range(size):
-            if solved[i][j] != npgrid[i][j] and npgrid[i][j] != 0:
+            if ideal_grid[i][j] != npgrid[i][j] and npgrid[i][j] != 0:
                 hamming[i][j] = 1
     # DEBUG
     # print("HAMMING COMP")
-    # print(solved)
+    # print(ideal_grid)
     # print(npgrid)
     # FIN DEBUG
     h_ham = sum(sum(hamming))
