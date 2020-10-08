@@ -57,8 +57,21 @@ def compare_childs_costs(dico, grid, current_node, h_type, ideal_grid):
 		node_g = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
 		next_pos_g = {"x" : x, "y" : y - 1} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
 		childs.append(get_child_cost(dico, node_g, grid, cur_pos, next_pos_g, h_type, ideal_grid))
+	#for child in childs:
+		#print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
+	childs = sort_childs_costs(childs)
+
+def	sort_childs_costs(childs):
+	sorted_childs = []
 	for child in childs:
 		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
+	i = 0
+	j = 0
+
+	print()
+	for child in sorted_childs:
+		print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
+
 
 def	get_child_move_cost(node, tmpgrid, ideal_grid):
 	pos = node.pos
@@ -83,8 +96,8 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
 	node.nb = value
 	node.pos = {"x" : next_pos['x'], "y" : next_pos['y']} # assignation de la nouvel pos au child node
 	node.h_c = h.call_heuristic(dico, tmpgrid, h_type, ideal_grid) # assignation du coup heuristic au child node
-	node.g_c = get_child_move_cost(node, tmpgrid, ideal_grid)
-	node.f_c = node.g_c + node.h_c
+	node.g_c = get_child_move_cost(node, tmpgrid, ideal_grid) # assignation du coup de deplacement
+	node.f_c = node.g_c + node.h_c # assignation du coup f(x)
 	print("after move :\n", tmpgrid, '\n')
 	return node
 
@@ -93,7 +106,7 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
     next_node = None
     file_node = []
     childs = compare_childs_costs(dico, grid, start_node, h_type, ideal_grid)
-
+	
 
 def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
     grid = convert_multi_d_to_numpy(grid, dico["size"])
