@@ -11,9 +11,9 @@ def call_heuristic(dico, grid, h_type, ideal_grid): # Determine quelle fonction 
     if "hamming" in h_type:
         return h_hamming(dico, grid, ideal_grid)
     elif "manhattan" in h_type:
-        h_manhattan()
+        return h_manhattan()
     elif "linear_conflict" in h_type:
-        h_linear_conflict()
+        return h_linear_conflict()
 
 def h_manhattan():
     print("manhattan not done")
