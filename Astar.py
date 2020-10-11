@@ -91,6 +91,7 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
 	tmpgrid = deepcopy(grid) # Deepcopy de la grid pour ne pas modifier l'original
 	print("before move :\n", tmpgrid)
 	# Deplacement de la piece
+	print(tmpgrid)
 	value = tmpgrid[next_pos['x']][next_pos['y']]
 	tmpgrid[cur_pos['x']][cur_pos['y']] = value
 	tmpgrid[next_pos['x']][next_pos['y']] = 0
@@ -111,6 +112,11 @@ def	append_childs_to_file(childs):
 	elif len(childs) == 4:
 		return childs[0], childs[1], childs[2], childs[3]
 
+def	move_top_child(dico, starting_node, next_node):
+	print(starting_node)
+	print(next_node)
+	return starting_node
+
 def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
 	open_nodes = []
 	next_node = None
@@ -118,6 +124,13 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
 	closed_nodes.append(start_node)
 	childs = get_childs_and_infos(dico, grid, start_node, h_type, ideal_grid)
 	file_node += append_childs_to_file(childs)
+	heuristic_cost = h.call_heuristic(dico, grid, h_type, ideal_grid)
+	#while heuristic_cost != 0:
+		#next_node = file_node[0]
+		#grid = move_top_child(dico, closed_nodes[len(closed_nodes) - 1], next_node)
+		#closed_nodes.append(next_node)
+		#childs = get_childs_and_infos(dico, grid, closed_nodes[len(closed_nodes) -1], h_type, ideal_grid)
+		#print(h.call_heuristic(dico, grid, h_type, ideal_grid))
 	
 
 def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
