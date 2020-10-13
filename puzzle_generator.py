@@ -90,6 +90,7 @@ if __name__ == "__main__":
         puzzle = make_puzzle(s, solvable=solv, iterations=args.iterations)
         #-----------------------------------------------------------------------------------
         # Call to write puzzle inside file instead of on stdout
+        write_puzzle(puzzle, s, args.solvable, args.unsolvable, args.iterations)
         print("\033[32;3mSolvable \033[0m", end='') if args.solvable else print("\033[31;3mUnsolvable \033[0m", end='')
         print("puzzle of size {} generated with {} iterations allowed.".format(s, args.iterations))
         #
