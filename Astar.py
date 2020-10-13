@@ -29,38 +29,38 @@ def get_start_pos(grid):
     return pos
 
 def get_childs_and_infos(dico, grid, current_node, h_type, ideal_grid):
-	x = current_node.pos["x"]
-	y = current_node.pos["y"]
-	childs = []
-	cur_pos = {"x" : x, "y" : y} # POSITION DU ZERO
-	# TEST DE MOUVEMENT VERS LE BAS, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
-	if x + 1 < dico["size"]:
-                print('\nBAS')
-                node_b = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
-                next_pos_b = {"x" : x + 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
-                childs.append(get_child_cost(dico, node_b, grid, cur_pos, next_pos_b, h_type, ideal_grid))
-	# TEST DE MOUVEMENT VERS LE HAUT, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
-	if x - 1 >= 0 and x < dico['size']:
-		print('\nHAUT')
-		node_h = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
-		next_pos_h = {"x" : x - 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
-		childs.append(get_child_cost(dico, node_h, grid, cur_pos, next_pos_h, h_type, ideal_grid))	
-	# TEST DE MOUVEMENT VERS LA DROITE, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
-	if y + 1 < dico['size']:
-		print('\nDROITE')
-		node_d = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
-		next_pos_d = {"x" : x, "y" : y + 1} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
-		childs.append(get_child_cost(dico, node_d, grid, cur_pos, next_pos_d, h_type, ideal_grid))
-	# TEST DE MOUVEMENT VERS LA GAUCHE, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
-	if y - 1 >= 0 and x < dico['size']:
-		print('\nGAUCHE')
-		node_g = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
-		next_pos_g = {"x" : x, "y" : y - 1} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
-		childs.append(get_child_cost(dico, node_g, grid, cur_pos, next_pos_g, h_type, ideal_grid))
-	#for child in childs:
-		#print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
-	childs = sort_childs_costs(childs)
-	return childs
+    x = current_node.pos["x"]
+    y = current_node.pos["y"]
+    childs = []
+    cur_pos = {"x" : x, "y" : y} # POSITION DU ZERO
+    # TEST DE MOUVEMENT VERS LE BAS, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
+    if x + 1 < dico["size"]:
+        # print('\nBAS')
+        node_b = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
+        next_pos_b = {"x" : x + 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
+        childs.append(get_child_cost(dico, node_b, grid, cur_pos, next_pos_b, h_type, ideal_grid))
+    # TEST DE MOUVEMENT VERS LE HAUT, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
+    if x - 1 >= 0 and x < dico['size']:
+        # print('\nHAUT')
+        node_h = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
+        next_pos_h = {"x" : x - 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
+        childs.append(get_child_cost(dico, node_h, grid, cur_pos, next_pos_h, h_type, ideal_grid))	
+    # TEST DE MOUVEMENT VERS LA DROITE, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
+    if y + 1 < dico['size']:
+        # print('\nDROITE')
+        node_d = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
+        next_pos_d = {"x" : x, "y" : y + 1} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
+        childs.append(get_child_cost(dico, node_d, grid, cur_pos, next_pos_d, h_type, ideal_grid))
+    # TEST DE MOUVEMENT VERS LA GAUCHE, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
+    if y - 1 >= 0 and x < dico['size']:
+        # print('\nGAUCHE')
+        node_g = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
+        next_pos_g = {"x" : x, "y" : y - 1} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
+        childs.append(get_child_cost(dico, node_g, grid, cur_pos, next_pos_g, h_type, ideal_grid))
+    #for child in childs:
+        #print(child.nb, child.pos, child.h_c, child.g_c, child.f_c)
+    childs = sort_childs_costs(childs)
+    return childs
 
 def	sort_childs_costs(childs):
 	i = 0
@@ -89,7 +89,7 @@ def	get_child_move_cost(node, tmpgrid, ideal_grid):
 
 def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
         tmpgrid = deepcopy(grid) # Deepcopy de la grid pour ne pas modifier l'original
-        print("before move :\n", tmpgrid)
+        # print("before move :\n", tmpgrid)
         # Deplacement de la piece
         value = tmpgrid[next_pos['x']][next_pos['y']]
         tmpgrid[cur_pos['x']][cur_pos['y']] = value
@@ -100,7 +100,7 @@ def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
         node.h_c = h.call_heuristic(dico, tmpgrid, h_type, ideal_grid) # assignation du coup heuristic au child node
         node.g_c = get_child_move_cost(node, tmpgrid, ideal_grid) # assignation du coup de deplacement
         node.f_c = node.g_c + node.h_c # assignation du coup f(x)
-        print("after move :\n", tmpgrid, '\n')
+        # print("after move :\n", tmpgrid, '\n')
         return node
 
 def	append_childs_to_file(file_node, childs):
@@ -108,8 +108,10 @@ def	append_childs_to_file(file_node, childs):
         return file_node
 
 def	move_top_child(dico, grid, new_node, current_node):
-        print("starting node : ",current_node)
-        print("next node : ", new_node)
+        value = grid[new_node.pos['x']][new_node.pos['y']]
+        grid[current_node.pos['x']][current_node.pos['y']] = value
+        grid[new_node.pos['x']][new_node.pos['y']] = 0
+        print("GRID : ", grid)
         return grid 
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
