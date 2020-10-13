@@ -3,6 +3,7 @@ import heuristics as h
 import re
 import numpy as np
 from copy import deepcopy
+import time
 
 def convert_multi_d_to_numpy(grid, size):
     npgrid = np.zeros((size, size), dtype=int)
@@ -111,7 +112,6 @@ def	move_top_child(dico, grid, new_node, current_node):
         value = grid[new_node.pos['x']][new_node.pos['y']]
         grid[current_node.pos['x']][current_node.pos['y']] = value
         grid[new_node.pos['x']][new_node.pos['y']] = 0
-        print("GRID : ", grid)
         return grid 
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
@@ -122,15 +122,29 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
         childs = get_childs_and_infos(dico, grid, start_node, h_type, ideal_grid)
         file_node = append_childs_to_file(file_node, childs) #redoo in list type
         heuristic_cost = h.call_heuristic(dico, grid, h_type, ideal_grid)
-        while heuristic_cost != 0:
+        loop = 0
+        while heuristic_cost != 0 and loop != 2000:
+                #time.sleep(8)
+                print("Grid before :\n", grid)
+                tmpgrid = deepcopy(grid)
                 grid = move_top_child(dico, grid, file_node[0][0], closed_nodes[len(closed_nodes) - 1]) #new grid with move
+                old = deepcopy(closed_nodes[len(closed_nodes) - 1])
                 closed_nodes.append(file_node[0][0]) #fermeture 1er elem
                 file_node[0].pop(0) #pop le 1er elem vu que il est explored
                 childs = get_childs_and_infos(dico, grid, closed_nodes[len(closed_nodes) - 1], h_type, ideal_grid)
                 file_node = append_childs_to_file(file_node, childs) #maj file_node avec les new childs
                 heuristic_cost = file_node[0][0].h_c #assignation cout heuristique
-                print("GRID : \n", grid)
+                #print(file_node[0][0].pos, closed_nodes[len(closed_nodes) - 1].pos)
+                if file_node[0][0].pos['x'] == old.pos['x'] and \
+                        file_node[0][0].pos['y'] == old.pos['y']:
+                            print("grid before old: \n", grid)
+                            file_node.pop(0)
+                            grid = deepcopy(tmpgrid)
+                            closed_nodes.pop(len(closed_nodes) - 1)
+                            print("grid after old: \n", grid)
+                print("Grid after : \n", grid)
                 print(h.call_heuristic(dico, grid, h_type, ideal_grid))
+                loop += 1
 
 def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
     grid = convert_multi_d_to_numpy(grid, dico["size"])
