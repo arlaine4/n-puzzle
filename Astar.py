@@ -35,10 +35,10 @@ def get_childs_and_infos(dico, grid, current_node, h_type, ideal_grid):
 	cur_pos = {"x" : x, "y" : y} # POSITION DU ZERO
 	# TEST DE MOUVEMENT VERS LE BAS, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
 	if x + 1 < dico["size"]:
-		print('\nBAS')
-		node_b = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
-		next_pos_b = {"x" : x + 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
-		childs.append(get_child_cost(dico, node_b, grid, cur_pos, next_pos_b, h_type, ideal_grid))
+                print('\nBAS')
+                node_b = deepcopy(solver.Node()) # deepcopy pour eviter la reference et creer le child node
+                next_pos_b = {"x" : x + 1, "y" : y} # POSITION DE LA PIECE QUI SERA ECHANGER AVEC LE ZERO
+                childs.append(get_child_cost(dico, node_b, grid, cur_pos, next_pos_b, h_type, ideal_grid))
 	# TEST DE MOUVEMENT VERS LE HAUT, SI LE MOUVEMENT EST POSSIBLE ON CALCULE LE COUT H
 	if x - 1 >= 0 and x < dico['size']:
 		print('\nHAUT')
@@ -88,50 +88,47 @@ def	get_child_move_cost(node, tmpgrid, ideal_grid):
 				return move
 
 def get_child_cost(dico, node, grid, cur_pos, next_pos, h_type, ideal_grid):
-	tmpgrid = deepcopy(grid) # Deepcopy de la grid pour ne pas modifier l'original
-	print("before move :\n", tmpgrid)
-	# Deplacement de la piece
-	print(tmpgrid)
-	value = tmpgrid[next_pos['x']][next_pos['y']]
-	tmpgrid[cur_pos['x']][cur_pos['y']] = value
-	tmpgrid[next_pos['x']][next_pos['y']] = 0
-	# fin
-	node.nb = value
-	node.pos = {"x" : next_pos['x'], "y" : next_pos['y']} # assignation de la nouvel pos au child node
-	node.h_c = h.call_heuristic(dico, tmpgrid, h_type, ideal_grid) # assignation du coup heuristic au child node
-	node.g_c = get_child_move_cost(node, tmpgrid, ideal_grid) # assignation du coup de deplacement
-	node.f_c = node.g_c + node.h_c # assignation du coup f(x)
-	print("after move :\n", tmpgrid, '\n')
-	return node
+        tmpgrid = deepcopy(grid) # Deepcopy de la grid pour ne pas modifier l'original
+        print("before move :\n", tmpgrid)
+        # Deplacement de la piece
+        value = tmpgrid[next_pos['x']][next_pos['y']]
+        tmpgrid[cur_pos['x']][cur_pos['y']] = value
+        tmpgrid[next_pos['x']][next_pos['y']] = 0
+        # fin
+        node.nb = value
+        node.pos = {"x" : next_pos['x'], "y" : next_pos['y']} # assignation de la nouvel pos au child node
+        node.h_c = h.call_heuristic(dico, tmpgrid, h_type, ideal_grid) # assignation du coup heuristic au child node
+        node.g_c = get_child_move_cost(node, tmpgrid, ideal_grid) # assignation du coup de deplacement
+        node.f_c = node.g_c + node.h_c # assignation du coup f(x)
+        print("after move :\n", tmpgrid, '\n')
+        return node
 
-def	append_childs_to_file(childs):
-	if len(childs) == 2:
-		return childs[0], childs[1]
-	elif len(childs) == 3:
-		return childs[0], childs[1], childs[2]
-	elif len(childs) == 4:
-		return childs[0], childs[1], childs[2], childs[3]
+def	append_childs_to_file(file_node, childs):
+        file_node.insert(0, childs)
+        return file_node
 
-def	move_top_child(dico, starting_node, next_node):
-	print(starting_node)
-	print(next_node)
-	return starting_node
+def	move_top_child(dico, grid, new_node, current_node):
+        print("starting node : ",current_node)
+        print("next node : ", new_node)
+        return grid 
 
 def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
-	open_nodes = []
-	next_node = None
-	file_node = []
-	closed_nodes.append(start_node)
-	childs = get_childs_and_infos(dico, grid, start_node, h_type, ideal_grid)
-	file_node += append_childs_to_file(childs)
-	heuristic_cost = h.call_heuristic(dico, grid, h_type, ideal_grid)
-	#while heuristic_cost != 0:
-		#next_node = file_node[0]
-		#grid = move_top_child(dico, closed_nodes[len(closed_nodes) - 1], next_node)
-		#closed_nodes.append(next_node)
-		#childs = get_childs_and_infos(dico, grid, closed_nodes[len(closed_nodes) -1], h_type, ideal_grid)
-		#print(h.call_heuristic(dico, grid, h_type, ideal_grid))
-	
+        open_nodes = []
+        next_node = None
+        file_node = []
+        closed_nodes.append(start_node)
+        childs = get_childs_and_infos(dico, grid, start_node, h_type, ideal_grid)
+        file_node = append_childs_to_file(file_node, childs) #redoo in list type
+        heuristic_cost = h.call_heuristic(dico, grid, h_type, ideal_grid)
+        while heuristic_cost != 0:
+                grid = move_top_child(dico, grid, file_node[0][0], closed_nodes[len(closed_nodes) - 1]) #new grid with move
+                closed_nodes.append(file_node[0][0]) #fermeture 1er elem
+                file_node[0].pop(0) #pop le 1er elem vu que il est explored
+                childs = get_childs_and_infos(dico, grid, closed_nodes[len(closed_nodes) - 1], h_type, ideal_grid)
+                file_node = append_childs_to_file(file_node, childs) #maj file_node avec les new childs
+                heuristic_cost = file_node[0][0].h_c #assignation cout heuristique
+                print("GRID : \n", grid)
+                print(h.call_heuristic(dico, grid, h_type, ideal_grid))
 
 def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
     grid = convert_multi_d_to_numpy(grid, dico["size"])
