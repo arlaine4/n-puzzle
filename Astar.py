@@ -114,7 +114,38 @@ def	move_top_child(dico, grid, new_node, current_node):
         grid[new_node.pos['x']][new_node.pos['y']] = 0
         return grid 
 
-def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
+def shortest_way(dico, grid, start, h_type, ideal_grid, visu):
+    open_n = [start] #liste de parents
+    closed_n = [] #parents deja visitee
+    current_n = start
+    while len(open_n) != 0:
+        time.sleep(3)
+        #open_n.pop(0) # ??
+        childs = get_childs_and_infos(dico, grid, current_n, h_type, ideal_grid)
+        print("Childs :\n")
+        for child in childs:
+            print(child)
+        current_n = childs[0] #meilleur child = nouveau_parent
+        closed_n.append(current_n)
+        if current_n not in closed_n:
+            pass
+        if current_n not in open_n:
+            open_n.append(current_n)
+        else:
+            if current_n.g_c >= open_n[0].g_c:
+                current_n = open_n[1]
+                closed_n.append(current_n)
+        print("Grid \033[33mbefore:\033[0m\n", grid)
+        grid = move_top_child(dico, grid, current_n, open_n[0])
+        open_n.pop(0) # ??
+        print("Grid \033[35mafter:\033[0m\n", grid)
+        #print(current_n, '\n', open_n[0])
+        #grid = move_top_child(dico, grid, current_n, open_n[0])
+        #open_n.pop(0) # ??
+
+        
+
+"""def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid, visu):
         open_nodes = []
         next_node = None
         file_node = []
@@ -123,8 +154,10 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
         file_node = append_childs_to_file(file_node, childs) #redoo in list type
         heuristic_cost = h.call_heuristic(dico, grid, h_type, ideal_grid)
         loop = 0
+        grid_states = []
+        grid_states.append(grid)
         while heuristic_cost != 0 and loop != 2000:
-                #time.sleep(8)
+                #time.sleep(2)
                 print("Grid before :\n", grid)
                 tmpgrid = deepcopy(grid)
                 grid = move_top_child(dico, grid, file_node[0][0], closed_nodes[len(closed_nodes) - 1]) #new grid with move
@@ -145,13 +178,16 @@ def shortest_way(dico, grid, closed_nodes, start_node, h_type, ideal_grid):
                 print("Grid after : \n", grid)
                 print(h.call_heuristic(dico, grid, h_type, ideal_grid))
                 loop += 1
+                grid_states.append(grid)
+        #for grid in grid_states:
+            #print(grid, '\n')"""
 
-def Astar(dico, grid, closed_nodes, h_type, ideal_grid):
+def Astar(dico, grid, closed_nodes, h_type, ideal_grid, visu):
     grid = convert_multi_d_to_numpy(grid, dico["size"])
     print("Starting grid:\n", grid)
     start = solver.Node()
     start.pos = get_start_pos(grid)
     closed_nodes.append(start)
     print("starting position : ",start.pos)
-    shortest_way(dico, grid, closed_nodes, start, h_type, ideal_grid)
+    shortest_way(dico, grid, start, h_type, ideal_grid, visu)
 

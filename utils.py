@@ -10,6 +10,7 @@ def get_args_argparse():
     parser.add_argument('--hamming', '-a', action='store_true', help='hamming distamce heuristic')
     parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
     parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic')
+    parser.add_argument('-visual', '-v', action='store_true', help='trigger visualition')
     options = parser.parse_args()
     return options
 
