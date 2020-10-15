@@ -60,4 +60,9 @@ def load_grid(dico):
     print(grid)
     return grid
 
-
+def get_0_pos(grid):
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if grid[i][j] == 0:
+                return i, j
+    return -1, -1
