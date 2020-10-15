@@ -1,4 +1,6 @@
 import argparse
+import numpy as np
+import re
 
 def get_args_argparse():
     """Initialisation et ajout des arguments"""
@@ -47,6 +49,21 @@ def set_dico_infos():
         sys.exit()
     return dico
 
+def cast_list_to_numpy_array(grid, size):
+    npgrid = np.zeros((size, size), dtype=int) #change to int16
+    test = str(grid).split()
+    l = 0
+    n = 0
+    for i in test:
+        tmp = re.sub('[^0-9]', '', i)
+        if l == size and n < size:
+            l = 0
+            n += 1
+        if tmp.isdigit():
+            npgrid[n][l] = int(tmp)
+            l += 1
+    return npgrid
+
 def load_grid(dico):
     grid = []
     file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
@@ -57,7 +74,6 @@ def load_grid(dico):
             i += 1
         else:
             grid.append(row.replace('\n', ''))
-    print(grid)
     return grid
 
 def get_0_pos(grid):
