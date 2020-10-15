@@ -10,7 +10,7 @@ def do_move(dico, grid, move, switch):
         grid[pos], grid[pos - 1] = grid[pos - 1], grid[pos]
     return new_grid, switch + 1
 
-def get_childs_and_infos(dico, grid):
+def get_moves(dico, grid):
     pos = grid.index(0)
     moves = []
     if not pos < size:                                      #BAS
