@@ -2,6 +2,7 @@ import set_ideal_grid as sid
 import utils
 import queue as q
 import algorithm as algo
+import time
 
 def shortest_way(grid, ideal_grid, dico, h_type, visu):
     queue = q.PriorityQueue() #file prio
@@ -13,8 +14,7 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
     while iteration <= dico["iteration"]:
         g_c, grid, parent, cost = queue.get()
         if (grid == ideal_grid):
-            print(grid)
-            break
+            return ideal_grid
         closed.add(tuple(grid))
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
@@ -22,10 +22,21 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
             print(grid)
             print(move)
             queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, closed, ideal_grid, queue, cost)
+        iteration += 1
 
 
 def Astar(dico, h_type, visu):
     ideal_grid = sid.set_ideal_grid(dico)
     grid = utils.load_grid(dico) #chargement de la grille
     grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
-    shortest_way(grid, ideal_grid, dico, h_type, visu)
+    start_t = time.time()
+    grid = shortest_way(grid, ideal_grid, dico, h_type, visu)
+    end_t = time.time()
+    # print (ideal_grid)
+    # print (grid)
+    for i in range(len(grid)):
+        if (i%dico['size'] == 0):
+            print()
+        print(grid[i], end=' ')
+    print()
+    print ("Temp d'execution:", round(((end_t - start_t)), 2), "seconde(s)")
