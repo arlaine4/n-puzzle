@@ -16,7 +16,6 @@ class   Puzzle():
             print("This puzzle is not solvable, stopping now.")
             sys.exit()
         print(self.get_dico())
-        print(self.get_visu())
 
 #-------------------------------------------------
 # Getteurs et setteurs
