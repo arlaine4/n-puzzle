@@ -46,3 +46,18 @@ def set_dico_infos():
         print("Error in one of the parameters, please enter a valid input.")
         sys.exit()
     return dico
+
+def load_grid(dico):
+    grid = []
+    file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
+    fd = open(file_name, 'r+')
+    i = 0
+    for row in fd:
+        if i == 0:
+            i += 1
+        else:
+            grid.append(row.replace('\n', ''))
+    print(grid)
+    return grid
+
+
