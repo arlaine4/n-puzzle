@@ -1,6 +1,5 @@
 import set_ideal_grid as sid
 import utils
-import heuristics
 import queue as q
 import algorithm as algo
 
@@ -12,14 +11,18 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
     iteration = 0
     switchs = 0
     while iteration <= dico["iteration"]:
-        g_c, grid, parent, f_c = queue.get()
+        g_c, grid, parent, cost = queue.get()
+        if (grid == ideal_grid):
+            print(grid)
+            break
         closed.add(tuple(grid))
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
         for move in moves:
             print(grid)
             print(move)
-            queue, switchs = algo.do_move(dico, grid, move, switchs)
+            queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, closed, ideal_grid, queue, cost)
+
 
 def Astar(dico, h_type, visu):
     ideal_grid = sid.set_ideal_grid(dico)

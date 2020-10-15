@@ -1,10 +1,39 @@
 from set_ideal_grid import *
+import utils
 import numpy as np
 import re
 
-def call_heuristic(dico, grid, h_type, ideal_grid): # Determine quelle fonction heuristic utilisee
+def list_to_nparray(grid, size):
+    npgrid = np.zeros((size, size), dtype='int16')
+    test = str(grid).split()
+    l = 0
+    n = 0
+    for i in test:
+        tmp = re.sub('[^0-9]', '', i)
+        if l == size and n < size:
+            l = 0
+            n += 1
+        if tmp.isdigit():
+            npgrid[n][l] = int(tmp)
+            l += 1
+    return npgrid
+
+def base_travel_cost(grid, ideal_grid, nb):
+    tmpx, tmpy = utils.get_0_pos(grid)
+    x = 0; y = 0
+    move = 0
+    for i in range(len(ideal_grid)):
+        for j in range(len(ideal_grid[i])):
+            if ideal_grid[i][j] == nb:
+                x = i - tmpx ; y = j - tmpy
+                move = abs(x) + abs(y)
+                return move
+
+def call_heuristic(dico, grid, h_type, ideal_grid, nb): # Determine quelle fonction heuristic utilisee
+    npgrid = list_to_nparray(grid, dico['size'])
+    npideal = list_to_nparray(ideal_grid, dico['size'])
     if "hamming" in h_type:
-        return h_hamming(dico, grid, ideal_grid)
+        return h_hamming(dico, npgrid, npideal), base_travel_cost(npgrid, npideal, nb)
     elif "manhattan" in h_type:
         return h_manhattan()
     elif "linear_conflict" in h_type:
