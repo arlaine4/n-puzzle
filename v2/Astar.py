@@ -22,5 +22,5 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
 def Astar(dico, h_type, visu):
     ideal_grid = sid.set_ideal_grid(dico)
     grid = utils.load_grid(dico) #chargement de la grille
-    #grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
+    grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
     shortest_way(grid, ideal_grid, dico, h_type, visu)

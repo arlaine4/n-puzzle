@@ -57,15 +57,12 @@ def cast_list_to_numpy_array(grid, size):
     test = str(grid).split()
     l = 0
     n = 0
+    new = []
     for i in test:
         tmp = re.sub('[^0-9]', '', i)
-        if l == size and n < size:
-            l = 0
-            n += 1
         if tmp.isdigit():
-            npgrid[n][l] = int(tmp)
-            l += 1
-    return npgrid
+            new.append(int(tmp))
+    return new
 
 def load_grid(dico):
     """Chargement de la grille depuis le fichier .txt"""
