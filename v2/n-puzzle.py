@@ -1,14 +1,20 @@
 import utils
 import sys
+from Astar import Astar
 
 class   Puzzle():
     def __init__(self):
         self.dico = {}
         self.visu = False
 
-    def main(self, options):
+    def main(self, options, h_type):
         self.set_dico()
         self.set_visu(options.visual)
+        if self.dico["solvable"] == "True":
+            Astar(self.get_dico(), h_type, self.get_visu())
+        elif self.dico["solvable"] == "False":
+            print("This puzzle is not solvable, stopping now.")
+            sys.exit()
         print(self.get_dico())
         print(self.get_visu())
 
@@ -36,5 +42,4 @@ if __name__ == "__main__":
         print("Please enter only one heuristic type.")
         sys.exit()
     puzzle = Puzzle()
-    puzzle.main(options)
-
+    puzzle.main(options, h_type)
