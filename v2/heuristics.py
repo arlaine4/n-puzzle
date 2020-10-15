@@ -2,10 +2,6 @@ from set_ideal_grid import *
 import numpy as np
 import re
 
-def static_additive_patern_database(npgrid):
-    patern_grid = [[], [], []]
-    return pater_grid
-
 def call_heuristic(dico, grid, h_type, ideal_grid): # Determine quelle fonction heuristic utilisee
     if "hamming" in h_type:
         return h_hamming(dico, grid, ideal_grid)
