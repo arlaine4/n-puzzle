@@ -1,4 +1,5 @@
 from set_ideal_grid import *
+from copy import deepcopy
 import utils
 import numpy as np
 import re
@@ -29,7 +30,8 @@ def base_travel_cost(grid, ideal_grid, nb):
                 move = abs(x) + abs(y)
                 return move
 
-def call_heuristic(dico, grid, h_type, ideal_grid, nb): # Determine quelle fonction heuristic utilisee
+def call_heuristic(dico, grid, h_type, ideal_grid, nb):
+	"""Determine quelle fonction heuristique a utiliser"""
 	npgrid = list_to_nparray(grid, dico['size'])
 	npideal = list_to_nparray(ideal_grid, dico['size'])
 	if "hamming" in h_type:
@@ -37,7 +39,15 @@ def call_heuristic(dico, grid, h_type, ideal_grid, nb): # Determine quelle fonct
 	elif "manhattan" in h_type:
 		return h_manhattan(dico, npgrid, npideal), base_travel_cost(npgrid, npideal, nb)
 	elif "linear_conflict" in h_type:
-		return h_linear_conflict()
+		return h_linear_conflict(dico, npgrid, npideal), base_travel_cost(npgrid, npideal, nb)
+
+def	check_conflict(grid, ideal_grid, i, j):
+	tmp_grid = deepcopy(grid)
+	tmp_grid[i][j] = ideal_grid[i][j]
+	if tmp_grid[i][j] == ideal_grid[i][j]:
+		return True
+	#print(grid[i][j], ideal_grid[i][j], '\n', grid, '\n', ideal_grid)
+	return False
 
 def h_manhattan(dico, grid, ideal_grid):
 	size = dico["size"]
@@ -48,9 +58,17 @@ def h_manhattan(dico, grid, ideal_grid):
 				manhattan += base_travel_cost(grid, ideal_grid, grid[i][j])
 	return manhattan
 
-def h_linear_conflict():
-	print("linear conflict not done")
-	return
+def h_linear_conflict(dico, grid, ideal_grid):
+	size = dico["size"]
+	linear_conflict = 0
+	nb_conflicts = 0
+	for i in range(size):
+		for j in range(size):
+			if grid[i][j] != ideal_grid[i][j]:
+				linear_conflict += base_travel_cost(grid, ideal_grid, grid[i][j])
+				if check_conflict(grid, ideal_grid, i, j) is True:
+					nb_conflicts += 1
+	return linear_conflict + (nb_conflicts * 2)
 
 def h_hamming(dico, grid, ideal_grid):
     size = dico["size"]
