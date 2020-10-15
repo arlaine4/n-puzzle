@@ -1,5 +1,3 @@
-
-
 def get_childs_and_infos(dico, grid, ideal_grid):
     x, y = get_0_pos(grid)
     moves = []
