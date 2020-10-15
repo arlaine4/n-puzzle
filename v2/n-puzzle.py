@@ -15,7 +15,7 @@ class   Puzzle():
         elif self.dico["solvable"] == "False":
             print("This puzzle is not solvable, stopping now.")
             sys.exit()
-        print(self.get_dico())
+        print("Dico infos : ",self.get_dico())
 
 #-------------------------------------------------
 # Getteurs et setteurs
