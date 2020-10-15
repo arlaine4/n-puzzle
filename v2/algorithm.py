@@ -1,37 +1,25 @@
-from copy import deepcopy
-import utils
-
 def do_move(dico, grid, move, switch):
-    x, y = utils.get_0_pos(grid)
-    new_grid = deepcopy(grid)
-    if move == 'down':                  #BAS
-        tmp = new_grid[x + 1][y]
-        print(new_grid)
-        new_grid[x + 1][y] = 0
-        new_grid[x][y] = tmp
-    if move == 'up':                    #HAUT
-        tmp = new_grid[x - 1][y]
-        new_grid[x - 1][y] = 0
-        new_grid[x][y] = tmp
-    if move == 'right':                 #DROITE
-        tmp = new_grid[x][y + 1]
-        new_grid[x][y + 1] = 0
-        new_grid[x][y] = tmp
-    if move == 'left':                  #GAUCHE
-        tmp = new_grid[x][y - 1]
-        new_grid[x][y - 1] = 0
-        new_grid[x][y] = tmp
+    pos = puzzle.index(0) ## Find position of zero
+    if move == 'up':
+        grid[pos], grid[pos - size] = grid[pos - size], grid[pos]
+    if move == 'down':
+        grid[pos], grid[pos + size] = grid[pos + size], grid[pos]
+    if move == 'right':
+        grid[pos], grid[pos + 1] = grid[pos + 1], grid[pos]
+    if move == 'left':
+        grid[pos], grid[pos - 1] = grid[pos - 1], grid[pos]
     return new_grid, switch + 1
 
-def get_moves(dico, grid):
-    x, y = utils.get_0_pos(grid)
+def get_childs_and_infos(dico, grid):
+    pos = grid.index(0)
     moves = []
-    if x + 1 < dico["size"]:                #BAS
+    if not pos < size:                                      #BAS
         moves.append('down')
-    if x - 1 >= 0 and x < dico['size']:     #HAUT
+    if not pos >= len(grid) - size:                       #HAUT
         moves.append('up')
-    if y + 1 < dico['size']:                #DROITE
+    if not pos % size == 0:                                 #DROITE
         moves.append('right')
-    if y - 1 >= 0 and x < dico['size']:     #GAUCHE
+    if not (pos + 1) % dico['size'] == 0 and pos != 0:      #GAUCHE
         moves.append('left')
     return moves
+
