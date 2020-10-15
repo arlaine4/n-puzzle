@@ -1,4 +1,4 @@
-def get_childs_and_infos(dico, grid, ideal_grid):
+def get_childs_and_infos(dico, grid):
     x, y = get_0_pos(grid)
     moves = []
     if x + 1 < dico["size"]:                #BAS
