@@ -28,6 +28,8 @@ def get_heuristic_type(options):
     return str(h_type)
 
 def set_dico_infos():
+    """Build du dictionnaire avec les informations
+    sur le puzzle etc"""
     dico = {"size" : 0, "solvable" : None, "unsolvable" : None, "iteration" : 10000}
     fd = open("data/infos.txt", "r+")
     infos = []
@@ -50,7 +52,8 @@ def set_dico_infos():
     return dico
 
 def cast_list_to_numpy_array(grid, size):
-    npgrid = np.zeros((size, size), dtype=int) #change to int16
+    """Cast de list en array numpy"""
+    npgrid = np.zeros((size, size), dtype='int16') #change to int16
     test = str(grid).split()
     l = 0
     n = 0
@@ -65,6 +68,7 @@ def cast_list_to_numpy_array(grid, size):
     return npgrid
 
 def load_grid(dico):
+    """Chargement de la grille depuis le fichier .txt"""
     grid = []
     file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
     fd = open(file_name, 'r+')
@@ -77,6 +81,8 @@ def load_grid(dico):
     return grid
 
 def get_0_pos(grid):
+    """Recuperation de la position de la case 0 dans
+    la grille"""
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             if grid[i][j] == 0:
