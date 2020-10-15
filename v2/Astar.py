@@ -17,6 +17,8 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
         for move in moves:
+            print(grid)
+            print(move)
             queue, switchs = algo.do_move(dico, grid, move, switchs)
 
 def Astar(dico, h_type, visu):
