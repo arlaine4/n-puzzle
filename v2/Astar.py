@@ -16,13 +16,13 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu):
         if (grid == ideal_grid):
             return ideal_grid
         closed.add(tuple(grid))
+        print(grid)
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
         for move in moves:
-            print(grid)
-            print(move)
             queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, closed, ideal_grid, queue, cost)
         iteration += 1
+        print (iteration)
 
 
 def Astar(dico, h_type, visu):
@@ -32,8 +32,6 @@ def Astar(dico, h_type, visu):
     start_t = time.time()
     grid = shortest_way(grid, ideal_grid, dico, h_type, visu)
     end_t = time.time()
-    # print (ideal_grid)
-    # print (grid)
     for i in range(len(grid)):
         if (i%dico['size'] == 0):
             print()
