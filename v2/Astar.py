@@ -33,9 +33,9 @@ def Astar(dico, h_type, visu):
         ideal_grid = sid.set_ideal_grid(dico)
         grid = utils.load_grid(dico) #chargement de la grille
         grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
-        start_t = time.time()
+        start_t = time.time() if visu == False else 0
         grid, states, complexity = shortest_way(grid, ideal_grid, dico, h_type, visu) #soustraire le temps passe dans le visu si on le trigger
-        end_t = time.time()
+        end_t = time.time() if visu == False else 0
         for i in range(len(grid)):
                 if (i%dico['size'] == 0):
                         print()
@@ -43,4 +43,7 @@ def Astar(dico, h_type, visu):
         print()
         print("Complexity in time: ", complexity)
         print("Complexity in size: ", states)
-        print("Resolution time:", round(((end_t - start_t)), 2), "seconde(s)")
+        if not visu:
+            print("Resolution time:", round(((end_t - start_t)), 2), "seconde(s)")
+        else:
+            print("There's no resolution time when the option -v is activated")
