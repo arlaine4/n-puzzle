@@ -5,6 +5,11 @@ import queue as q
 import algorithm as algo
 import time
 
+def print_base_grid(size):
+
+def print_state(grid, dico):
+    print_base_grid(dico["size"])
+
 def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
     queue = q.PriorityQueue() #File prio
     closed = set() #nodes deja explorees
@@ -12,16 +17,17 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
     queue.put((0, grid, grid, 0))
     iteration = 0
     switchs = 0 #mouvements effectues
-    if visu_bool is True:
-        visu.visu(dico, grid)
     while iteration < dico["iteration"]:
         g_c, grid, parent, cost = queue.get()
+        if visu_bool is True:
+            print_state(grid, dico)
+        break
         if grid == ideal_grid:
             return ideal_grid, switchs, iteration
         closed.add(tuple(grid))
-        if iteration % 100 == 0:
-            print(grid)
-            print("Loop", iteration)
+        #if iteration % 100 == 0:
+            #print(grid)
+            #print("Loop", iteration)
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
         for move in moves:
