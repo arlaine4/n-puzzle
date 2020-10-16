@@ -46,4 +46,4 @@ def Astar(dico, h_type, visu):
         if not visu:
             print("Resolution time:", round(((end_t - start_t)), 2), "seconde(s)")
         else:
-            print("There's no resolution time when the option -v is activated")
+            print("There's no timer when the -visual option is activated")
