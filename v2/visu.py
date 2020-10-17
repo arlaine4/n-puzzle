@@ -72,8 +72,13 @@ def menu_visu(stdscr):
         if key == 111:
             stop_menu(last_move, stdscr)
             break
+    return last_move
 
 def shortest_way_visu(grid, ideal_grid, dico, h_type):
     stdscr = init_visu()
     mode = menu_visu(stdscr)
+    if last_move == 259 or last_move == 111:
+        mode = "auto"
+    else:
+        mode = "manual"
     destroy_visu(stdscr)
