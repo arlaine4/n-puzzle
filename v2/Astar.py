@@ -4,11 +4,7 @@ import utils
 import queue as q
 import algorithm as algo
 import time
-
-def print_base_grid(size):
-
-def print_state(grid, dico):
-    print_base_grid(dico["size"])
+import visu
 
 def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
     queue = q.PriorityQueue() #File prio
@@ -17,13 +13,14 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
     queue.put((0, grid, grid, 0))
     iteration = 0
     switchs = 0 #mouvements effectues
+    if visu_bool is True:
+        stdscr = visu.init_visu()
+    else:
+        stdscr = None
     while iteration < dico["iteration"]:
         g_c, grid, parent, cost = queue.get()
-        if visu_bool is True:
-            print_state(grid, dico)
-        break
         if grid == ideal_grid:
-            return ideal_grid, switchs, iteration
+            return ideal_grid, switchs, iteration, stdscr
         closed.add(tuple(grid))
         #if iteration % 100 == 0:
             #print(grid)
@@ -35,21 +32,26 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
                     closed, ideal_grid, queue, cost)
         iteration += 1
 
-def Astar(dico, h_type, visu):
+def Astar(dico, h_type, visu_bool):
         ideal_grid = sid.set_ideal_grid(dico)
         grid = utils.load_grid(dico) #chargement de la grille
         grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
-        start_t = time.time() if visu == False else 0
-        grid, states, complexity = shortest_way(grid, ideal_grid, dico, h_type, visu) #soustraire le temps passe dans le visu si on le trigger
-        end_t = time.time() if visu == False else 0
-        for i in range(len(grid)):
-                if (i%dico['size'] == 0):
-                        print()
-                print(grid[i], end=' ')
-        print()
-        print("Complexity in time: ", complexity)
-        print("Complexity in size: ", states)
-        if not visu:
+        start_t = time.time() if visu_bool == False else 0
+        if visu_bool is False:
+            grid, states, complexity, stdscr = shortest_way(grid, ideal_grid, dico, h_type, visu_bool) #soustraire le temps passe dans le visu si on le trigger
+        elif visu_bool is True:
+            visu.shortest_way_visu(grid, ideal_grid, dico, h_type)
+        end_t = time.time() if visu_bool == False else 0
+        #for i in range(len(grid)):
+                #if (i%dico['size'] == 0):
+                        #print()
+                #print(grid[i], end=' ')
+        #print()
+        #print("Complexity in time: ", complexity)
+        #print("Complexity in size: ", states)
+        if not visu_bool:
             print("Resolution time:", round(((end_t - start_t)), 2), "seconde(s)")
+            print("Complexity in time: ", complexity)
+            print("Complexity in size: ", states)
         else:
             print("There's no timer when the -visual option is activated")

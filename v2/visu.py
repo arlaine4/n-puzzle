@@ -13,7 +13,11 @@ def init_visu():
     curses.curs_set(0)
     return stdscr
 
-def destroy_visu(stdscr):
+def destroy_visu(stdscr, mode="end"):
+    if mode == "end":
+        stdscr.refresh()
+        time.sleep(5)
+        stdscr.clear()
     stdscr.keypad(False)
     curses.echo()
     curses.nocbreak()
@@ -67,18 +71,78 @@ def menu_visu(stdscr):
         stdscr.refresh()
         while 1:
             key = stdscr.getch()
-            if key ==  259 or key == 258 or key == 111:
+            #stdscr.addstr(20, 20, str(key))
+            stdscr.refresh()
+            if key ==  259 or key == 258 or key == 111: #change this with y position and give it to stop menu
                 break
         if key == 111:
-            stop_menu(last_move, stdscr)
+            #print(last_move)
+            #time.sleep(2)
+            #stop_menu(last_move, stdscr)
             break
     return last_move
+
+def print_grid(stdscr, grid, dico, ite):
+    stdscr.clear()
+    stdscr.refresh()
+    x = 10
+    y = 10
+    size = dico["size"]
+    for i in range(size):
+        for j in range(size):
+            if j < size - 1:
+                stdscr.addstr(y, x, "|----")
+            else:
+                stdscr.addstr(y, x, "|----|")
+            x += 5
+        x = 10
+        y += 1
+        for j in range(size):
+            if j < size - 1:
+                stdscr.addstr(y, x, "|    ")
+            else:
+                stdscr.addstr(y, x, "|    |")
+            x += 5
+        x = 10
+        y += 1
+        if i == size - 1:
+            for k in range(size):
+                stdscr.addstr(y, x, "|----|")
+                x += 5
+    #place_numbers_in_position(stdscr, grid, dico)
+    stdscr.refresh()
+
+def place_numbers_in_position(stdscr, grid, dico):
+    positions = []
+    #position une liste de tuple avec x, y pour chaque elem de la grid
+    #append dans positions les coord de chaque elem de la grid
+    #en faisant des ope sur size et ajustement avec les positions de depart
 
 def shortest_way_visu(grid, ideal_grid, dico, h_type):
     stdscr = init_visu()
     mode = menu_visu(stdscr)
-    if last_move == 259 or last_move == 111:
-        mode = "auto"
-    else:
+    stdscr.clear()
+    stdscr.refresh()
+    time.sleep(2)
+    if mode == 258:
         mode = "manual"
+    else:
+        mode = "auto"
+    queue = q.PriorityQueue()
+    closed = set()
+    queue.put((0, grid, grid, 0))
+    iteration = 0
+    switchs = 0
+    print_grid(stdscr, grid, dico, switchs)
+    while iteration < dico["iteration"]:
+        g_c, grid, parent, cost = queue.get()
+        if grid == ideal_grid:
+            break
+        closed.add(tuple(grid))
+        moves = algo.get_moves(dico, grid)
+        for move in moves:
+            queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, \
+                    closed, ideal_grid, queue, cost)
+        print_grid(stdscr, grid, dico, switchs)
+        iteration += 1
     destroy_visu(stdscr)
