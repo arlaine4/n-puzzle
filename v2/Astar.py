@@ -22,9 +22,6 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
         if grid == ideal_grid:
             return ideal_grid, switchs, iteration, stdscr
         closed.add(tuple(grid))
-        #if iteration % 100 == 0:
-            #print(grid)
-            #print("Loop", iteration)
         path.append((grid, parent, g_c))
         moves = algo.get_moves(dico, grid)
         for move in moves:
