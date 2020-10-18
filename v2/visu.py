@@ -6,6 +6,7 @@ import utils
 import algorithm as algo
 
 def init_visu():
+    """Initialisation des proprietes du visu et des couleurs"""
     stdscr = curses.initscr()
     curses.noecho()
     stdscr.keypad(True)
@@ -19,6 +20,7 @@ def init_visu():
     return stdscr
 
 def destroy_visu(stdscr, mode="end"):
+    """Destructeur du visu pour retablir l'etat 'normal' du terminal"""
     if mode == "end":
         stdscr.refresh()
         stdscr.clear()
@@ -29,6 +31,7 @@ def destroy_visu(stdscr, mode="end"):
     curses.endwin()
 
 def stop_menu(pos, stdscr):
+    """Menu d'apres selection du mode"""
     stdscr.clear()
     stdscr.refresh()
     if pos == 14:
@@ -56,6 +59,7 @@ def stop_menu(pos, stdscr):
 
 
 def menu_visu(stdscr):
+    """Menu de selection du mode de resolution (manual or auto)"""
     mode = 0
     key = None
     x = 15
@@ -69,7 +73,7 @@ def menu_visu(stdscr):
             stdscr.addstr(12, 12, "->  ", curses.color_pair(3))
             stdscr.addstr(12, 16, "Auto mode.", curses.A_STANDOUT)
             stdscr.addstr(14, 16, "Manual mode.")
-            last_move = key
+            last_move, x = cureses.getsyx()
         elif key == 258:
             stdscr.clear()
             stdscr.refresh()
@@ -78,12 +82,12 @@ def menu_visu(stdscr):
             stdscr.addstr(12, 16, "Auto mode.")
             stdscr.addstr(14, 16, "Manual mode.", curses.A_STANDOUT)
             stdscr.refresh()
-            y, x = curses.getsyx()
+            last_move, x = curses.getsyx()
         stdscr.refresh()
         while 1:
             key = stdscr.getch()
             stdscr.refresh()
-            if key ==  259 or key == 258 or key == 111: #change this with y position and give it to stop menu
+            if key ==  259 or key == 258 or key == 111:
                 break
         if key == 111:
             stop_menu(y, stdscr)
@@ -91,6 +95,7 @@ def menu_visu(stdscr):
     return last_move
 
 def print_grid(stdscr, grid, dico, pos_nb):
+    """Tracage de la grille"""
     stdscr.clear()
     stdscr.refresh()
     x = 10
@@ -117,10 +122,12 @@ def print_grid(stdscr, grid, dico, pos_nb):
             for k in range(size):
                 stdscr.addstr(y, x, "|----|")
                 x += 5
-    place_numbers_in_position(stdscr, pos_nb, None)
+    place_numbers_in_position(stdscr, pos_nb, None) # Placement des nombres a leur positions respecives
     stdscr.refresh()
 
 def init_pos_nb(dico, grid):
+    """Initialisation des nombres et de leurs positions x, y dans le visu
+    a partir de la grid"""
     pos_nb = []
     x = 12
     y = 9
@@ -133,11 +140,12 @@ def init_pos_nb(dico, grid):
     return pos_nb
 
 def place_numbers_in_position(stdscr, pos_nb, old_pos):
+    """Fonction qui place les nombres sur le visu en fonction de leur x et y"""
     x = 12
     y = 12
     bool_standout = True
     for i in range(len(pos_nb)):
-        if old_pos is not None and bool_standout is True and pos_nb[i][2] != old_pos[i][2]:
+        if old_pos is not None and bool_standout is True and pos_nb[i][2] != old_pos[i][2]: #STANDOUT si un move a ete fait
             bool_standout = False
             stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]), curses.A_STANDOUT)
             stdscr.refresh()
@@ -154,7 +162,7 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
     stdscr.clear()
     stdscr.refresh()
     time.sleep(2)
-    if mode == 258:
+    if mode == 14: #position du y a la fin du visu determine le mode
         mode = "manual"
     else:
         mode = "auto"
@@ -163,9 +171,16 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
     queue.put((0, grid, grid, 0))
     iteration = 0
     switchs = 0
+
+    #--------------------------------------------------------------------
+    # Preparation de la grille et des nombres pour le visu
+
     pos_nb = init_pos_nb(dico, grid)
     print_grid(stdscr, grid, dico, pos_nb)
     place_numbers_in_position(stdscr, pos_nb, None)
+
+    #
+    #--------------------------------------------------------------------
     ch = None
     while iteration < dico["iteration"]:
         if mode == "manual":
@@ -189,6 +204,5 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
         place_numbers_in_position(stdscr, pos_nb, old_pos)
         if ch == 111:
             break
-        #print_grid(stdscr, grid, dico, pos_nb)
         iteration += 1
     destroy_visu(stdscr)

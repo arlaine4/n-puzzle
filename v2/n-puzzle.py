@@ -15,7 +15,6 @@ class   Puzzle():
         elif self.dico["solvable"] == "False":
             print("This puzzle is not solvable, stopping now.")
             sys.exit()
-        print("Dico infos : ",self.get_dico())
 
 #-------------------------------------------------
 # Getteurs et setteurs
@@ -36,7 +35,8 @@ class   Puzzle():
 if __name__ == "__main__":
     options = utils.get_args_argparse()
     h_type = utils.get_heuristic_type(options)
-    print(h_type)
+    if options.visual == False:
+        print("Used heuristic :", h_type[2:len(h_type) - 2], end='')
     if h_type is None:
         print("Please enter only one heuristic type.")
         sys.exit()
