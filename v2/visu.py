@@ -22,7 +22,7 @@ def destroy_visu(stdscr, mode="end"):
     if mode == "end":
         stdscr.refresh()
         stdscr.clear()
-        time.sleep(1)
+        time.sleep(4)
     stdscr.keypad(False)
     curses.echo()
     curses.nocbreak()
