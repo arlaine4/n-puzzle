@@ -38,8 +38,4 @@ def set_ideal_grid(dico):
         npgrid[n][l] = int(tmp)
         l += 1
     grid = to_spiral(npgrid)
-    new = []
-    for i in range(len(grid)):
-        for j in range(len(grid)):
-            new.append(grid[i][j])
-    return new
+    return grid
