@@ -36,7 +36,7 @@ if __name__ == "__main__":
     options = utils.get_args_argparse()
     h_type = utils.get_heuristic_type(options)
     if options.visual == False:
-        print("Used heuristic :", h_type[2:len(h_type) - 2], end='')
+        print("Used heuristic :", h_type[2:len(h_type) - 2])
     if h_type is None:
         print("Please enter only one heuristic type.")
         sys.exit()
