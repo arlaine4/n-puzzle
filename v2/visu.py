@@ -35,23 +35,23 @@ def stop_menu(pos, stdscr):
     stdscr.clear()
     stdscr.refresh()
     if pos == 14:
-        stdscr.addstr(10, 10, "You selected Manual mode, starting now.")
+        stdscr.addstr(10, 10, "You selected Slow mode, starting now.")
         stdscr.refresh()
         time.sleep(1.4)
-        stdscr.addstr(10, 10, "You selected Manual mode, starting now..")
+        stdscr.addstr(10, 10, "You selected Slow mode, starting now..")
         stdscr.refresh()
         time.sleep(1.4)
-        stdscr.addstr(10, 10, "You selected Manual mode, starting now...")
+        stdscr.addstr(10, 10, "You selected Slow mode, starting now...")
         stdscr.refresh()
         time.sleep(1.4)
-    elif pos == 12:
-        stdscr.addstr(10, 10, "You selected Auto mode, starting now.")
+    elif pos == 0:
+        stdscr.addstr(10, 10, "You selected Fast mode, starting now.")
         stdscr.refresh()
         time.sleep(1.4)
-        stdscr.addstr(10, 10, "You selected Auto mode, starting now..")
+        stdscr.addstr(10, 10, "You selected Fast mode, starting now..")
         stdscr.refresh()
         time.sleep(1.4)
-        stdscr.addstr(10, 10, "You selected Auto mode, starting now...")
+        stdscr.addstr(10, 10, "You selected Fast mode, starting now...")
         stdscr.refresh()
         time.sleep(1.4)
     stdscr.clear()
@@ -71,16 +71,16 @@ def menu_visu(stdscr):
             stdscr.refresh()
             stdscr.addstr(10, 10, "Select a mode for visual:", curses.A_UNDERLINE)
             stdscr.addstr(12, 12, "->  ", curses.color_pair(3))
-            stdscr.addstr(12, 16, "Auto mode.", curses.A_STANDOUT)
-            stdscr.addstr(14, 16, "Manual mode.")
-            last_move, x = cureses.getsyx()
+            stdscr.addstr(12, 16, "Fast mode.", curses.A_STANDOUT)
+            stdscr.addstr(14, 16, "Slow mode.")
+            last_move, x = curses.getsyx()
         elif key == 258:
             stdscr.clear()
             stdscr.refresh()
             stdscr.addstr(10, 10, "Select a mode for visual:", curses.A_UNDERLINE)
             stdscr.addstr(14, 12, "->  ", curses.color_pair(3))
-            stdscr.addstr(12, 16, "Auto mode.")
-            stdscr.addstr(14, 16, "Manual mode.", curses.A_STANDOUT)
+            stdscr.addstr(12, 16, "Fast mode.")
+            stdscr.addstr(14, 16, "Slow mode.", curses.A_STANDOUT)
             stdscr.refresh()
             last_move, x = curses.getsyx()
         stdscr.refresh()
@@ -90,7 +90,7 @@ def menu_visu(stdscr):
             if key ==  259 or key == 258 or key == 111:
                 break
         if key == 111:
-            stop_menu(y, stdscr)
+            stop_menu(last_move, stdscr)
             break
     return last_move
 
@@ -122,7 +122,7 @@ def print_grid(stdscr, grid, dico, pos_nb):
             for k in range(size):
                 stdscr.addstr(y, x, "|----|")
                 x += 5
-    place_numbers_in_position(stdscr, pos_nb, None) # Placement des nombres a leur positions respecives
+    place_numbers_in_position(stdscr, pos_nb, "fast", None) # Placement des nombres a leur positions respecives
     stdscr.refresh()
 
 def init_pos_nb(dico, grid):
@@ -139,7 +139,7 @@ def init_pos_nb(dico, grid):
         x += 5
     return pos_nb
 
-def place_numbers_in_position(stdscr, pos_nb, old_pos):
+def place_numbers_in_position(stdscr, pos_nb, mode, old_pos):
     """Fonction qui place les nombres sur le visu en fonction de leur x et y"""
     x = 12
     y = 12
@@ -147,14 +147,25 @@ def place_numbers_in_position(stdscr, pos_nb, old_pos):
     for i in range(len(pos_nb)):
         if old_pos is not None and bool_standout is True and pos_nb[i][2] != old_pos[i][2]: #STANDOUT si un move a ete fait
             bool_standout = False
-            stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]), curses.A_STANDOUT)
+            if len(str(pos_nb[i][2])) > 1:
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]), curses.A_STANDOUT)
+            else:
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], '  ')
+                stdscr.refresh()
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]), curses.A_STANDOUT)
             stdscr.refresh()
         else:
-            stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]))
+            if len(str(pos_nb[i][2])) > 1:
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]))
+            else:
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], '  ')
+                stdscr.refresh()
+                stdscr.addstr(pos_nb[i][0], pos_nb[i][1], str(pos_nb[i][2]))
             stdscr.refresh()
         stdscr.refresh()
     stdscr.refresh()
-    time.sleep(0.1)
+    if mode == "slow":
+        time.sleep(0.1)
 
 def shortest_way_visu(grid, ideal_grid, dico, h_type):
     stdscr = init_visu()
@@ -163,9 +174,9 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
     stdscr.refresh()
     time.sleep(2)
     if mode == 14: #position du y a la fin du visu determine le mode
-        mode = "manual"
+        mode = "slow"
     else:
-        mode = "auto"
+        mode = "fast"
     queue = q.PriorityQueue()
     closed = set()
     queue.put((0, grid, grid, 0))
@@ -177,22 +188,20 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
 
     pos_nb = init_pos_nb(dico, grid)
     print_grid(stdscr, grid, dico, pos_nb)
-    place_numbers_in_position(stdscr, pos_nb, None)
+    place_numbers_in_position(stdscr, pos_nb, mode, None)
 
     #
     #--------------------------------------------------------------------
     ch = None
     while iteration < dico["iteration"]:
-        if mode == "manual":
-            ch = stdscr.getch()
         g_c, grid, parent, cost = queue.get()
         old_pos = pos_nb
         pos_nb = init_pos_nb(dico, grid)
-        place_numbers_in_position(stdscr, pos_nb, old_pos)
+        place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
         if grid == ideal_grid:
             old_pos = pos_nb
             pos_nb = init_pos_nb(dico, grid)
-            place_numbers_in_position(stdscr, pos_nb, old_pos)
+            place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
             break
         closed.add(tuple(grid))
         moves = algo.get_moves(dico, grid)
@@ -201,7 +210,7 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
                     closed, ideal_grid, queue, cost)
         old_pos = pos_nb
         pos_nb = init_pos_nb(dico, grid)
-        place_numbers_in_position(stdscr, pos_nb, old_pos)
+        place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
         if ch == 111:
             break
         iteration += 1
