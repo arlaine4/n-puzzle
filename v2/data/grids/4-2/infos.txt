@@ -1,0 +1,4 @@
+size=4
+solvable=True
+unsolvable=False
+iteration=20000
