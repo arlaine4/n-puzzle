@@ -41,15 +41,9 @@ def Astar(dico, h_type, visu_bool):
             sys.exit()
         end_t = time.time() if visu_bool == False else 0
         if not visu_bool:
-            print("\nFinal grid: ", end='')
-            for i in range(len(grid)):
-                    if (i % dico['size'] == 0):
-                            print()
-                    print(grid[i], end=' ')
-            print()
-        if not visu_bool:
-            print("Resolution time:", round(((end_t - start_t)), 2), "seconde(s)")
+            utils.print_taquin(grid, dico)
             print("Complexity in time: ", complexity)
             print("Complexity in size: ", states)
+            print("Resolution time:", round(((end_t - start_t)), 2), "seconds" if round(((end_t - start_t)), 2) > 1 else "second")
         else:
             print("There's no timer when the -visual option is activated")

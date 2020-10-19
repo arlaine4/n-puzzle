@@ -85,3 +85,11 @@ def get_0_pos(grid):
             if grid[i][j] == 0:
                 return i, j
     return -1, -1
+
+def print_taquin(grid, dico):
+    print("\nFinal grid: ", end='')
+    for i in range(len(grid)):
+            if (i % dico['size'] == 0):
+                    print()
+            print(grid[i], end=' ')
+    print()
