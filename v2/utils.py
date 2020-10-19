@@ -8,7 +8,8 @@ def get_args_argparse():
     parser.add_argument('--hamming', '-a', action='store_true', help='hamming distance heuristic')
     parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
     parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic')
-    parser.add_argument('-visual', '-v', action='store_true', help='trigger visualisation')
+    parser.add_argument('--visual', '-v', action='store_true', help='trigger visualisation')
+    parser.add_argument('--file', '-f', action='store', help='open a selected file')
     options = parser.parse_args()
     return options
 
@@ -27,11 +28,22 @@ def get_heuristic_type(options):
         h_type.append("linear_conflict")
     return str(h_type)
 
-def set_dico_infos():
+def get_file_info(tmp):
+    tmpstr = ""
+    for i in range(len(tmp) - 1):
+        tmpstr += tmp[i] + '/'
+    return tmpstr + "infos.txt"
+
+def set_dico_infos(options):
     """Build du dictionnaire avec les informations
     sur le puzzle etc"""
     dico = {"size" : 0, "solvable" : None, "unsolvable" : None, "iteration" : 10000}
-    fd = open("data/infos.txt", "r+")
+    if options.file:
+        tmp = options.file.split('/')
+        info = get_file_info(tmp)
+        fd = open(info, "r+")
+    else:
+        fd = open("data/infos.txt", "r+")
     infos = []
     for elem in fd:
         infos.append(elem)
@@ -64,10 +76,13 @@ def cast_list_to_numpy_array(grid, size):
             new.append(int(tmp))
     return new
 
-def load_grid(dico):
+def load_grid(dico, options):
     """Chargement de la grille depuis le fichier .txt"""
     grid = []
-    file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
+    if options.file:
+        file_name = options.file
+    else:
+        file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
     fd = open(file_name, 'r+')
     i = 0
     for row in fd:

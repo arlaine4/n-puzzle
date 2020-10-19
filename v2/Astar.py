@@ -27,9 +27,9 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
         iteration += 1
     return None, None, None
 
-def Astar(dico, h_type, visu_bool):
+def Astar(dico, h_type, visu_bool, options):
         ideal_grid = sid.set_ideal_grid(dico)
-        grid = utils.load_grid(dico) #chargement de la grille
+        grid = utils.load_grid(dico, options) #chargement de la grille
         grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
         start_t = time.time() if visu_bool == False else 0
         if visu_bool is False:

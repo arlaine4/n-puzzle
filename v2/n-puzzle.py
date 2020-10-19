@@ -8,10 +8,11 @@ class   Puzzle():
         self.visu = False
 
     def main(self, options, h_type):
-        self.set_dico()
+        self.set_dico(options)
         self.set_visu(options.visual)
+        print(self.dico)
         if self.dico["solvable"] == "True":
-            Astar(self.get_dico(), h_type, self.get_visu())
+            Astar(self.get_dico(), h_type, self.get_visu(), options)
         elif self.dico["solvable"] == "False":
             print("This puzzle is not solvable, stopping now.")
             sys.exit()
@@ -19,8 +20,8 @@ class   Puzzle():
 #-------------------------------------------------
 # Getteurs et setteurs
 
-    def set_dico(self):
-        self.dico = utils.set_dico_infos()
+    def set_dico(self, options):
+        self.dico = utils.set_dico_infos(options)
 
     def set_visu(self, visu):
         self.visu = visu
