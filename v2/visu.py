@@ -17,12 +17,19 @@ def init_visu():
     curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
     return stdscr
 
-def destroy_visu(stdscr, mode="end"):
+def destroy_visu(stdscr, mode):
     """Destructeur du visu pour retablir l'etat 'normal' du terminal"""
     if mode == "end":
         stdscr.refresh()
         stdscr.clear()
         time.sleep(4)
+    elif mode == "stop_early":
+        stdscr.refresh()
+        stdscr.clear()
+        stdscr.addstr(10, 10, "Stopped early, setting back terminal configuration to default.", curses.A_UNDERLINE)
+        stdscr.refresh()
+        time.sleep(3)
+        stdscr.clear()
     stdscr.keypad(False)
     curses.echo()
     curses.nocbreak()
@@ -191,7 +198,14 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
     #
     #--------------------------------------------------------------------
     ch = None
+    stdscr.nodelay(1)
     while iteration < dico["iteration"]:
+        ch = stdscr.getch()
+        if ch == 111:
+            destroy_visu(stdscr, "stop_early")
+            break
+        elif ch is not None and ch != 111:
+            ch = None
         g_c, grid, parent, cost = queue.get()
         old_pos = pos_nb
         pos_nb = init_pos_nb(dico, grid)
@@ -212,4 +226,5 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
         if ch == 111:
             break
         iteration += 1
-    destroy_visu(stdscr)
+    if ch is None:
+        destroy_visu(stdscr, "end")

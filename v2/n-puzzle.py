@@ -10,7 +10,6 @@ class   Puzzle():
     def main(self, options, h_type):
         self.set_dico(options)
         self.set_visu(options.visual)
-        print(self.dico)
         if self.dico["solvable"] == "True":
             Astar(self.get_dico(), h_type, self.get_visu(), options)
         elif self.dico["solvable"] == "False":
