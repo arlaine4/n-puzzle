@@ -1,4 +1,0 @@
-size=4
-solvable=False
-unsolvable=True
-iteration=10000
