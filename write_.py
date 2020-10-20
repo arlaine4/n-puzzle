@@ -7,12 +7,14 @@ def write_puzzle(puzzle, size, solvable, unsolvable, iterations):
 #--------------------------------------------------------------------
 #                   Partie ecriture de la grid
 
-    fd = open("data/puzzle.csv", "w+")
+    file_name = 'data/puzzle-{}-1.txt'.format(size)
+    fd = open(file_name, "w+")
     fd.write(str(size) + '\n')
 
     lst = puzzle
     array = np.array(lst)
     array = np.reshape(array, (-1, size))
+    #add comments parsing ?
     for elem in array:
         for i in range(len(elem)):
             if i < len(elem) - 1:
