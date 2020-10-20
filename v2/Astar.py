@@ -8,24 +8,26 @@ import visu
 import sys
 
 def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
-    queue = q.PriorityQueue() #File prio
-    closed = set() #nodes deja explorees
-    path = []
-    queue.put((0, grid, grid, 0))
-    iteration = 0
-    switchs = 0 #mouvements effectues
-    while iteration < dico["iteration"]:
-        g_c, grid, parent, cost = queue.get()
-        if grid == ideal_grid:
-            return ideal_grid, switchs, iteration
-        closed.add(tuple(grid))
-        path.append((grid, parent, g_c))
-        moves = algo.get_moves(dico, grid)
-        for move in moves:
-            queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, \
-                    closed, ideal_grid, queue, cost)
-        iteration += 1
-    return None, None, None
+	queue = q.PriorityQueue() #File prio
+	closed = set() #nodes deja explorees
+	path = []
+	queue.put((0, grid, grid, 0))
+	grid_states = []
+	iteration = 0
+	switchs = 0 #mouvements effectues
+	while iteration < dico["iteration"]:
+		g_c, grid, parent, cost = queue.get()
+		if grid == ideal_grid:
+			return ideal_grid, switchs, iteration, grid_states
+		closed.add(tuple(grid))
+		grid_states.append(grid)
+		path.append((grid, parent, g_c))
+		moves = algo.get_moves(dico, grid)
+		for move in moves:
+			queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, \
+				closed, ideal_grid, queue, cost)
+		iteration += 1
+	return None, None, None, None
 
 def Astar(dico, h_type, visu_bool, options):
 		ideal_grid = sid.set_ideal_grid(dico)
@@ -33,7 +35,7 @@ def Astar(dico, h_type, visu_bool, options):
 		grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
 		start_t = time.time() if visu_bool == False else 0
 		if visu_bool is False:
-			grid, states, complexity = shortest_way(grid, ideal_grid, dico, h_type, visu_bool)
+			grid, states, complexity, path = shortest_way(grid, ideal_grid, dico, h_type, visu_bool)
 		elif visu_bool is True:
 			visu.shortest_way_visu(grid, ideal_grid, dico, h_type)
 		if grid is None and states is None and complexity is None:
@@ -44,7 +46,9 @@ def Astar(dico, h_type, visu_bool, options):
 			sys.exit()
 		end_t = time.time() if visu_bool == False else 0
 		if not visu_bool:
-			utils.print_taquin(grid, dico)
+			if options.states:
+				utils.print_states(path, dico)
+			utils.print_taquin(grid, dico, "final")
 			print("Complexity in time: ", complexity)
 			print("Complexity in size: ", states)
 			print("Resolution time:", round(((end_t - start_t)), 2), "seconds" if round(((end_t - start_t)), 2) > 1 else "second")

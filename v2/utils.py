@@ -2,16 +2,29 @@ import argparse
 import numpy as np
 import re
 
-def get_args_argparse():
-    """Initialisation et ajout des arguments"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--hamming', '-a', action='store_true', help='hamming distance heuristic')
-    parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
-    parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic')
-    parser.add_argument('--visual', '-v', action='store_true', help='trigger visualisation')
-    parser.add_argument('--file', '-f', action='store', help='open a selected file')
+def	get_args_argparse():
+	"""Initialisation et ajout des arguments"""
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--hamming', '-a', action='store_true', help='hamming distance heuristic')
+	parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
+	parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic ')
+	parser.add_argument('--visual', '-v', action='store_true', help='trigger visualisation')
+	parser.add_argument('--file', '-f', action='store', help='open a selected file')
+	parser.add_argument('--states', '-s', action='store_true', help='print grid states')
+	options = parser.parse_args()
+	return options
+
+"""def get_args_argparse():
+	""Initialisation et ajout des arguments""
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--hamming', '-a', action='store_true', help='hamming distance heuristic')
+	parser.add_argument('--manhattan', '-m', action='store_true', help='manhattan distance heuristic')
+	parser.add_argument('--linear_conflict', '-l', action='store_true', help='linear conflict heuristic')
+	parser.add_argument('--visual', '-v', action='store_true', help='trigger visualisation')
+	parser.add_argument('--file', '-f', action='store', help='open a selected file')
+	parser.add_argument('--states', '-s', action='store_ture', help='print grid states')
     options = parser.parse_args()
-    return options
+	return options"""
 
 def get_heuristic_type(options):
     """Parsing types heuristiques en arguments"""
@@ -101,10 +114,15 @@ def get_0_pos(grid):
                 return i, j
     return -1, -1
 
-def print_taquin(grid, dico):
-    print("\nFinal grid: ", end='')
-    for i in range(len(grid)):
-            if (i % dico['size'] == 0):
-                    print()
-            print(grid[i], end=' ')
-    print()
+def print_taquin(grid, dico, mode):
+	if mode == "final":
+		print("\nFinal grid: ", end='')
+	for i in range(len(grid)):
+		if (i % dico['size'] == 0):
+			print()
+		print(grid[i], end=' ')
+	print()
+
+def	print_states(path, dico):
+	for grid in path:
+		print_taquin(grid, dico, 'current')
