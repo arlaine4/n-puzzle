@@ -51,12 +51,16 @@ def set_dico_infos(options):
     """Build du dictionnaire avec les informations
     sur le puzzle etc"""
     dico = {"size" : 0, "solvable" : None, "unsolvable" : None, "iteration" : 10000}
-    if options.file:
-        tmp = options.file.split('/')
-        info = get_file_info(tmp)
-        fd = open(info, "r+")
-    else:
-        fd = open("data/infos.txt", "r+")
+    try:
+        if options.file:
+            tmp = options.file.split('/')
+            info = get_file_info(tmp)
+            fd = open(info, "r+")
+        else:
+            fd = open("data/infos.txt", "r+")
+    except:
+        print("Look like there's some trouble with infos.txt")
+        exit(1)
     infos = []
     for elem in fd:
         infos.append(elem)
@@ -96,7 +100,11 @@ def load_grid(dico, options):
         file_name = options.file
     else:
         file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
-    fd = open(file_name, 'r+')
+    try:
+        fd = open(file_name, 'r+')
+    except:
+        print("Look like we can't find '{}'".format(file_name))
+        exit(1)
     i = 0
     for row in fd:
         if i == 0:
