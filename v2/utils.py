@@ -82,7 +82,7 @@ def set_dico_infos(options):
 
 def cast_list_to_numpy_array(grid, size):
     """Cast de list en array numpy"""
-    npgrid = np.zeros((size, size), dtype='int16') #change to int16
+    npgrid = np.zeros((size, size), dtype='int16')
     test = str(grid).split()
     if (len(test) != size**2):
         print("It seems like the infos.txt is wrong about the size")
@@ -94,19 +94,33 @@ def cast_list_to_numpy_array(grid, size):
         tmp = re.sub('[^0-9]', '', i)
         if tmp.isdigit():
             new.append(int(tmp))
+    if len(new) < size * size:
+        print("Missing elements in grid..")
+        return None
+    elif len(new) > size * size:
+        print("Too many elements in grid.")
+        return None
+    elif check_duplicate_numbers_in_grid(new) is True:
+        print("Duplicates found inside the grid.")
+        return None
     return new
 
 def load_grid(dico, options):
     """Chargement de la grille depuis le fichier .txt"""
     grid = []
+    error = False
     if options.file:
         file_name = options.file
+        error = True
     else:
         file_name = 'data/puzzle-{}-1.txt'.format(str(dico["size"]))
     try:
         fd = open(file_name, 'r+')
     except:
-        print("Look like we can't find '{}'".format(file_name))
+        if error is False:
+            print("Infos file does not match the grid.")
+        elif error is True:
+            print("Look like we can't find '{}'".format(file_name))
         exit(1)
     i = 0
     for row in fd:
@@ -115,6 +129,15 @@ def load_grid(dico, options):
         else:
             grid.append(row.replace('\n', ''))
     return grid
+
+def check_duplicate_numbers_in_grid(grid):
+    elems = []
+    for elem in grid:
+        if elem not in elems:
+            elems.append(elem)
+        else:
+            return True
+    return False
 
 def get_0_pos(grid):
     """Recuperation de la position de la case 0 dans
