@@ -28,22 +28,25 @@ def shortest_way(grid, ideal_grid, dico, h_type, visu_bool):
     return None, None, None
 
 def Astar(dico, h_type, visu_bool, options):
-        ideal_grid = sid.set_ideal_grid(dico)
-        grid = utils.load_grid(dico, options) #chargement de la grille
-        grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
-        start_t = time.time() if visu_bool == False else 0
-        if visu_bool is False:
-            grid, states, complexity = shortest_way(grid, ideal_grid, dico, h_type, visu_bool)
-        elif visu_bool is True:
-            visu.shortest_way_visu(grid, ideal_grid, dico, h_type)
-        if grid is None and states is None and complexity is None:
-            print("{} iterations was not enought to find the solution for this puzzle.".format(dico["iteration"]))
-            sys.exit()
-        end_t = time.time() if visu_bool == False else 0
-        if not visu_bool:
-            utils.print_taquin(grid, dico)
-            print("Complexity in time: ", complexity)
-            print("Complexity in size: ", states)
-            print("Resolution time:", round(((end_t - start_t)), 2), "seconds" if round(((end_t - start_t)), 2) > 1 else "second")
-        else:
-            print("There's no timer when the -visual option is activated")
+		ideal_grid = sid.set_ideal_grid(dico)
+		grid = utils.load_grid(dico, options) #chargement de la grille
+		grid = utils.cast_list_to_numpy_array(grid, dico["size"]) #cast en type numpy
+		start_t = time.time() if visu_bool == False else 0
+		if visu_bool is False:
+			grid, states, complexity = shortest_way(grid, ideal_grid, dico, h_type, visu_bool)
+		elif visu_bool is True:
+			visu.shortest_way_visu(grid, ideal_grid, dico, h_type)
+		if grid is None and states is None and complexity is None:
+			if dico["iteration"] <= 0:
+				print("{} is not a correct value for iteration param.".format(dico["iteration"]))
+			else:
+				print("{} iterations was not enought to find the solution for this puzzle.".format(dico["iteration"]))
+			sys.exit()
+		end_t = time.time() if visu_bool == False else 0
+		if not visu_bool:
+			utils.print_taquin(grid, dico)
+			print("Complexity in time: ", complexity)
+			print("Complexity in size: ", states)
+			print("Resolution time:", round(((end_t - start_t)), 2), "seconds" if round(((end_t - start_t)), 2) > 1 else "second")
+		else:
+			print("There's no timer when the -visual option is activated")
