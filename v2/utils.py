@@ -84,6 +84,9 @@ def cast_list_to_numpy_array(grid, size):
     """Cast de list en array numpy"""
     npgrid = np.zeros((size, size), dtype='int16') #change to int16
     test = str(grid).split()
+    if (len(test) != size**2):
+        print("It seems like the infos.txt is wrong about the size")
+        exit(1)
     l = 0
     n = 0
     new = []
