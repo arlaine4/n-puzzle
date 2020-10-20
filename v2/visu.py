@@ -1,5 +1,6 @@
 import curses
 import time
+import sys
 import Astar as a
 import queue as q
 import utils
@@ -23,9 +24,13 @@ def destroy_visu(stdscr, mode):
         stdscr.refresh()
         stdscr.clear()
         time.sleep(4)
-    elif mode == "stop_early":
+    elif mode == "stop_early" or mode == "iteration":
         stdscr.refresh()
         stdscr.clear()
+        if mode == "iteration":
+            stdscr.addstr(9, 10, "Iterations can't be <= 0.", curses.A_UNDERLINE)
+            stdscr.refresh()
+            time.sleep(1)
         stdscr.addstr(10, 10, "Stopped early, setting back terminal configuration to default.", curses.A_UNDERLINE)
         stdscr.refresh()
         time.sleep(3)
@@ -106,6 +111,9 @@ def print_grid(stdscr, grid, dico, pos_nb):
     x = 10
     y = 10
     size = dico["size"]
+    if dico["iteration"] <= 0:
+        destroy_visu(stdscr, "iteration")
+        sys.exit()
     for i in range(size):
         for j in range(size):
             if j < size - 1:
@@ -191,6 +199,7 @@ def shortest_way_visu(grid, ideal_grid, dico, h_type):
     #--------------------------------------------------------------------
     # Preparation de la grille et des nombres pour le visu
 
+    time.sleep(2)
     pos_nb = init_pos_nb(dico, grid)
     print_grid(stdscr, grid, dico, pos_nb)
     place_numbers_in_position(stdscr, pos_nb, mode, None)
