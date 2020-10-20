@@ -173,63 +173,63 @@ def place_numbers_in_position(stdscr, pos_nb, mode, old_pos):
         time.sleep(0.1)
 
 def shortest_way_visu(grid, ideal_grid, dico, h_type):
-	stdscr = init_visu()
-	mode = menu_visu(stdscr)
-	stdscr.clear()
-	stdscr.refresh()
-	time.sleep(2)
-	if mode == 14: #position du y a la fin du visu determine le mode
-		mode = "slow"
-	else:
-		mode = "fast"
-	queue = q.PriorityQueue()
-	closed = set()
-	queue.put((0, grid, grid, 0))
-	iteration = 0
-	switchs = 0
+    stdscr = init_visu()
+    mode = menu_visu(stdscr)
+    stdscr.clear()
+    stdscr.refresh()
+    time.sleep(2)
+    if mode == 14: #position du y a la fin du visu determine le mode
+        mode = "slow"
+    else:
+        mode = "fast"
+    queue = q.PriorityQueue()
+    closed = set()
+    queue.put((0, grid, grid, 0))
+    iteration = 0
+    switchs = 0
 
-	#--------------------------------------------------------------------
-	# Preparation de la grille et des nombres pour le visu
+    #--------------------------------------------------------------------
+    # Preparation de la grille et des nombres pour le visu
 
-	pos_nb = init_pos_nb(dico, grid)
-	print_grid(stdscr, grid, dico, pos_nb)
-	place_numbers_in_position(stdscr, pos_nb, mode, None)
+    pos_nb = init_pos_nb(dico, grid)
+    print_grid(stdscr, grid, dico, pos_nb)
+    place_numbers_in_position(stdscr, pos_nb, mode, None)
 
-	#
-	#--------------------------------------------------------------------
-	ch = None
-	stdscr.nodelay(1)
-	while iteration < dico["iteration"]:
-		ch = stdscr.getch()
-		if ch == 111:
-			destroy_visu(stdscr, "stop_early")
-			break
-		elif ch is not None and ch != 111:
-			ch = None
-		g_c, grid, parent, cost = queue.get()
-		old_pos = pos_nb
-		pos_nb = init_pos_nb(dico, grid)
-		place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
-		if grid == ideal_grid:
-			old_pos = pos_nb
-			pos_nb = init_pos_nb(dico, grid)
-			place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
-			break
-		closed.add(tuple(grid))
-		moves = algo.get_moves(dico, grid)
-		for move in moves:
-			queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, \
-				closed, ideal_grid, queue, cost)
-		old_pos = pos_nb
-		pos_nb = init_pos_nb(dico, grid)
-		place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
-		if ch == 111:
-			break
-		iteration += 1
-	if iteration >= dico["iteration"] and grid != ideal_grid:
-		stdscr.addstr(10 + (dico["size"] * dico["size"]), 10 + (dico["size"] * dico["size"]), \
-			"{} iterations was not enough to find the solutions.".format(dico["iteration"]))
-		stdscr.refresh()
-		time.sleep(1)
-	if ch is None:
-		destroy_visu(stdscr, "end")
+    #
+    #--------------------------------------------------------------------
+    ch = None
+    stdscr.nodelay(1)
+    while iteration < dico["iteration"]:
+        ch = stdscr.getch()
+        if ch == 111:
+            destroy_visu(stdscr, "stop_early")
+            break
+        elif ch is not None and ch != 111:
+            ch = None
+        g_c, grid, parent, cost = queue.get()
+        old_pos = pos_nb
+        pos_nb = init_pos_nb(dico, grid)
+        place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
+        if grid == ideal_grid:
+            old_pos = pos_nb
+            pos_nb = init_pos_nb(dico, grid)
+            place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
+            break
+        closed.add(tuple(grid))
+        moves = algo.get_moves(dico, grid)
+        for move in moves:
+            queue, switchs = algo.heuristic_and_move(dico, grid, move, switchs, h_type, \
+                closed, ideal_grid, queue, cost)
+        old_pos = pos_nb
+        pos_nb = init_pos_nb(dico, grid)
+        place_numbers_in_position(stdscr, pos_nb, mode, old_pos)
+        if ch == 111:
+            break
+        iteration += 1
+    if iteration >= dico["iteration"] and grid != ideal_grid:
+        stdscr.addstr(10 + (dico["size"] * dico["size"]), 10 + (dico["size"] * dico["size"]), \
+            "{} iterations was not enough to find the solutions.".format(dico["iteration"]))
+        stdscr.refresh()
+        time.sleep(1)
+    if ch is None:
+        destroy_visu(stdscr, "end")
